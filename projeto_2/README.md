@@ -1,5 +1,7 @@
 # 📊 Superstore — EDA Interativa (Python + HTML)
 
+![Thumbnail do Dashboard](data/thumbnail.png)
+
 Este projeto apresenta uma **análise exploratória de dados (EDA)** completa sobre o dataset **Sample Superstore**, combinando **Python para processamento e análise** com um **relatório interativo em HTML** para visualização executiva dos resultados.
 
 O foco não é apenas gerar gráficos, mas **contar a história dos dados**, explorando vendas, lucro, clientes, descontos, logística e concentração de receita de forma clara e acionável.
