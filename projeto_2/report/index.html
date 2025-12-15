@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EDA Superstore | Relatório Interativo</title>
+
+  <link rel="stylesheet" href="./assets/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-badge">EDA</div>
+        <div class="brand-text">
+          <div class="brand-title">Superstore</div>
+          <div class="brand-subtitle">EDA + Relatório HTML</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a class="nav-link" href="#visao-geral">Visão geral</a>
+        <a class="nav-link" href="#vendas-distribuicao">Distribuição</a>
+        <a class="nav-link" href="#correlacao">Correlação</a>
+        <a class="nav-link" href="#categorias">Categorias</a>
+        <a class="nav-link" href="#sazonalidade">Sazonalidade</a>
+        <a class="nav-link" href="#segmentos">Segmentos</a>
+        <a class="nav-link" href="#descontos">Descontos & margem</a>
+        <a class="nav-link" href="#logistica">Logística</a>
+        <a class="nav-link" href="#geografia">Geografia</a>
+        <a class="nav-link" href="#clientes">Clientes</a>
+        <a class="nav-link" href="#insights">Insights finais</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="meta">
+          <div class="meta-label">Fonte</div>
+          <div class="meta-value">Sample Superstore (Tableau)</div>
+        </div>
+        <div class="meta">
+          <div class="meta-label">Autor</div>
+          <div class="meta-value">Guilherme</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <!-- HEADER -->
+      <header class="header">
+        <div>
+          <h1>Análise Exploratória (Superstore)</h1>
+          <p class="subtitle">
+            Relatório interativo com foco em padrões de vendas, sazonalidade, performance por categoria,
+            impacto de descontos e eficiência logística.
+          </p>
+        </div>
+
+        <div class="header-actions">
+          <a class="btn" href="#insights">Ver insights</a>
+          <a class="btn btn-outline" href="#visao-geral">Topo</a>
+        </div>
+      </header>
+
+      <!-- KPIs -->
+      <section id="visao-geral" class="section">
+        <div class="section-head">
+          <h2>Visão geral</h2>
+          <p class="section-desc">Resumo rápido do dataset e dos principais números (vamos preencher via Python depois).</p>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi">
+            <div class="kpi-label">Vendas totais</div>
+            <div class="kpi-value" id="kpi-sales">—</div>
+            <div class="kpi-foot">Somatório de vendas</div>
+          </div>
+
+          <div class="kpi">
+            <div class="kpi-label">Lucro total</div>
+            <div class="kpi-value" id="kpi-profit">—</div>
+            <div class="kpi-foot">Somatório de lucro</div>
+          </div>
+
+          <div class="kpi">
+            <div class="kpi-label">Pedidos</div>
+            <div class="kpi-value" id="kpi-orders">—</div>
+            <div class="kpi-foot">Qtd. de Order ID</div>
+          </div>
+
+          <div class="kpi">
+            <div class="kpi-label">Ticket médio</div>
+            <div class="kpi-value" id="kpi-ticket">—</div>
+            <div class="kpi-foot">Média de vendas por pedido</div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">Sobre a base</div>
+            <div class="card-text">
+              <p>
+                Este relatório usa uma versão <strong>processada</strong> do dataset Superstore, com colunas padronizadas
+                em português e nomes compatíveis com boas práticas (sem espaços, sem caracteres especiais).
+              </p>
+              <p>
+                A ideia é transformar a EDA em uma narrativa visual: o que vende mais, o que dá lucro, quando vende melhor,
+                onde estão as oportunidades e quais padrões de desconto prejudicam margem.
+              </p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Checklist do relatório</div>
+            <ul class="checklist">
+              <li>Distribuição de vendas</li>
+              <li>Correlação entre variáveis numéricas</li>
+              <li>Ticket médio por categoria</li>
+              <li>Sazonalidade (tempo)</li>
+              <li>Segmentos e subcategorias</li>
+              <li>Descontos, margem e lucro</li>
+              <li>Logística, geografia e clientes</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- DISTRIBUIÇÃO -->
+      <section id="vendas-distribuicao" class="section">
+        <div class="section-head">
+          <h2>Distribuição das vendas</h2>
+          <p class="section-desc">Como os valores de vendas se distribuem e onde há outliers.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Gráfico — Distribuição</div>
+        <div class="plot-slot" id="plot-distribuicao">
+            <div id="chart-distribuicao" style="height:320px;"></div>
+        </div>
+        </div>
+      </section>
+
+      <!-- CORRELAÇÃO -->
+      <section id="correlacao" class="section">
+        <div class="section-head">
+          <h2>Correlação</h2>
+          <p class="section-desc">Relação entre vendas, lucro, quantidade e desconto.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Gráfico — Heatmap de correlação</div>
+            <div class="plot-slot" id="plot-correlacao">
+            <div id="chart-correlacao" style="height:360px;"></div>
+            </div>
+        </div>
+      </section>
+
+      <!-- CATEGORIAS -->
+      <section id="categorias" class="section">
+        <div class="section-head">
+          <h2>Categorias</h2>
+          <p class="section-desc">Comparações de performance entre categorias e subcategorias.</p>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">Ticket médio por categoria</div>
+            <div class="plot-slot" id="plot-ticket-categoria">
+            <div id="chart-ticket-categoria" style="height:320px;"></div>
+            </div>
+          </div>
+
+        <div class="card">
+            <div class="card-title">Lucro por subcategoria</div>
+            <div class="plot-slot" id="plot-lucro-subcategoria">
+                <div id="chart-lucro-subcategoria" style="height:360px;"></div>
+            </div>
+        </div>
+        </div>
+      </section>
+
+      <!-- SAZONALIDADE -->
+      <section id="sazonalidade" class="section">
+        <div class="section-head">
+          <h2>Sazonalidade</h2>
+          <p class="section-desc">Evolução ao longo do tempo e comportamento por mês.</p>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">Vendas ao longo do tempo</div>
+            <div class="plot-slot" id="plot-tempo">
+            <div id="chart-vendas-tempo" style="height:320px;"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Sazonalidade média por mês</div>
+            <div class="plot-slot" id="plot-sazonalidade">
+            <div id="chart-sazonalidade-mes" style="height:320px;"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEGMENTOS -->
+      <section id="segmentos" class="section">
+        <div class="section-head">
+          <h2>Segmentos</h2>
+          <p class="section-desc">Comparação de vendas e lucro por segmento.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Vendas e lucro por segmento</div>
+            <div class="plot-slot" id="plot-segmentos">
+                <div id="chart-segmentos" style="height:360px;"></div>
+            </div>
+        </div>
+      </section>
+
+      <!-- DESCONTOS -->
+      <section id="descontos" class="section">
+        <div class="section-head">
+          <h2>Descontos & margem</h2>
+          <p class="section-desc">Como descontos impactam lucro e eficiência (margem).</p>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Impacto do desconto no lucro</div>
+            <div class="plot-slot" id="plot-desconto-lucro">
+                <div id="chart-desconto-lucro-desc" style="height:360px;"></div>
+            </div>
+        </div>
+      </section>
+
+      <!-- LOGÍSTICA -->
+      <section id="logistica" class="section">
+        <div class="section-head">
+          <h2>Logística</h2>
+          <p class="section-desc">Tempo de entrega e performance por modo de envio.</p>
+        </div>
+
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-title">Tempo de entrega</div>
+                <div class="plot-slot" id="plot-entrega">
+                    <div id="chart-entrega" style="height:360px;"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Performance por modo de envio</div>
+                <div class="plot-slot" id="plot-shipmode">
+                    <div id="chart-shipmode" style="height:360px;"></div>
+                </div>
+            </div>
+        </div>
+      </section>
+
+      <!-- GEOGRAFIA -->
+      <section id="geografia" class="section">
+        <div class="section-head">
+          <h2>Geografia</h2>
+          <p class="section-desc">Quais regiões/estados concentram vendas e lucro.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Ranking geográfico</div>
+            <div class="plot-slot" id="plot-geografia">
+                <div id="chart-geografia" style="height:420px;"></div>
+            </div>
+        </div>
+      </section>
+
+      <!-- CLIENTES -->
+      <section id="clientes" class="section">
+        <div class="section-head">
+          <h2>Clientes</h2>
+          <p class="section-desc">Concentração de receita e clientes mais relevantes.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Top clientes</div>
+            <div class="plot-slot" id="plot-clientes">
+                <div id="chart-clientes" style="height:420px;"></div>
+            </div>
+        </div>
+      </section>
+
+      <!-- INSIGHTS -->
+      <section id="insights" class="section">
+        <div class="section-head">
+          <h2>Insights finais</h2>
+          <p class="section-desc">3–5 conclusões objetivas (vamos preencher com base no que você já encontrou).</p>
+        </div>
+
+        <div class="card">
+            <ol class="insights">
+                <li><span class="muted">Insight 1:</span> A distribuição de vendas é altamente concentrada em tickets baixos e médios, com poucos pedidos muito altos (outliers). Isso indica que a maior parte do volume vem de transações menores, e decisões de sortimento e preço impactam mais o “miolo” do que os casos extremos.</li>
+
+                <li><span class="muted">Insight 2:</span> O ticket médio varia bastante por categoria: Technology tende a concentrar os maiores tickets, enquanto Office Supplies concentra tickets menores. Isso sugere estratégias diferentes de margem, oferta e campanhas por categoria.</li>
+
+                <li><span class="muted">Insight 3:</span> Desconto tem relação negativa com lucro: conforme o desconto aumenta, cresce a incidência de pedidos com lucro baixo ou negativo. O gráfico de dispersão mostra que promoções precisam de regras (ex.: limite por categoria/subcategoria) para não “comprar” receita com margem negativa.</li>
+
+                <li><span class="muted">Insight 4:</span> A sazonalidade mensal indica períodos com maior demanda (picos) e meses mais fracos, reforçando a importância de planejar estoque e campanhas com antecedência e ajustar metas por período, não apenas por trimestre/ano.</li>
+
+                <li><span class="muted">Insight 5:</span> Há concentração relevante de receita: poucos clientes e alguns estados concentram grande parte das vendas. Isso abre espaço para ações de retenção (top clientes) e análises locais (top estados), além de reduzir risco ao diversificar a base.</li>
+            </ol>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div>EDA Superstore • Relatório HTML</div>
+        <div class="muted">Gerado com Python + Plotly</div>
+      </footer>
+
+    </main>
+    </div>
+    <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
+    <script src="./assets/charts.js"></script>
+    <script src="./assets/app.js"></script>
+    <script src="./assets/app.js"></script>
+</body>
+</html>
