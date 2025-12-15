@@ -18,25 +18,25 @@ O foco não é apenas gerar gráficos, mas **contar a história dos dados**, exp
 ---
 
 ## 🧱 Estrutura do projeto
+## 🧱 Estrutura do projeto
 
-PROJETO_2/
-├── data/
-│ ├── raw/
-│ │ └── Sample - Superstore.xlsx
-│ └── processed/
-│ ├── superstore_processado.csv
-│ └── superstore_processado.parquet
-│
-├── notebooks/
-│ └── 01_eda_superstore.ipynb
-│
-├── report/
-│ └── assets/
-│ ├── app.js
-│ ├── charts.js
-│ └── style.css
-│
-└── index.html
+```text
+projeto_2/
+├─ data/
+│  ├─ raw/
+│  │  └─ Sample - Superstore.xlsx
+│  └─ processed/
+│     ├─ superstore_processado.csv
+│     └─ superstore_processado.parquet
+├─ notebooks/
+│  └─ 01_eda_superstore.ipynb
+└─ report/
+   ├─ assets/
+   │  ├─ app.js
+   │  ├─ charts.js
+   │  └─ style.css
+   └─ index.html
+```
 
 
 **Descrição das camadas:**
