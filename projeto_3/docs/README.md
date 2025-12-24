@@ -7,3 +7,5 @@ ou acessadas diretamente pelo Power BI Service.
 🧩 Modelo Dimensional: docs/modelo  
 📐 Métricas e Lógica de Negócio: docs/metricas  
 🌐 Publicação e Embed: docs/publicacao
+
+👉 [**Visualizar Dashboard**](https://app.powerbi.com/view?r=eyJrIjoiN2JmMDFiOGItMzAxMS00NjI1LWE2ZGMtNmIzOTI0YzBlMjk4IiwidCI6IjhjYzJkZWQ2LWEzYjktNDk4My04ZDcxLTY3OGZjN2E2NjRiZSJ9)
