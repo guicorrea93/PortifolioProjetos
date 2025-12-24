@@ -1,5 +1,7 @@
 # E-commerce 360° — Do Dado Bruto à Estratégia de Negócio
 
+![Thumbnail do Dashboard](data/thumbnail_1.png)
+
 ## 📌 Visão Geral
 Este projeto apresenta uma **análise estratégica completa de um e-commerce**, construída de ponta a ponta:  
 **desde a extração dos dados via API**, passando por **tratamento, modelagem dimensional e criação de métricas em DAX**, até a entrega de um **dashboard executivo no Power BI Service**.
