@@ -178,7 +178,7 @@ Analista de BI | Power BI | SQL | Python
 
 ---
 
-##🏁 Considerações Finais
+### 🏁 Considerações Finais
 
 Este projeto foi desenvolvido com foco em cenários reais de negócio, cobrindo desde a origem dos dados (API) até a entrega executiva, reforçando habilidades de:
 - Engenharia analítica
