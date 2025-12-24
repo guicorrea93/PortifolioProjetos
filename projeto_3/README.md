@@ -159,7 +159,7 @@ https://app.powerbi.com/view?r=eyJrIjoiN2JmMDFiOGItMzAxMS00NjI1LWE2ZGMtNmIzOTI0Y
 
 ---
 
-## 🌐 Embed HTML
+### 🌐 Embed HTML
 ```html
 <iframe title="Visão Estratégica de E-commerce"
         width="600"
@@ -171,7 +171,7 @@ https://app.powerbi.com/view?r=eyJrIjoiN2JmMDFiOGItMzAxMS00NjI1LWE2ZGMtNmIzOTI0Y
 ```
 ---
 
-##👤 Autor
+### 👤 Autor
 
 Guilherme Quaglio Corrêa
 Analista de BI | Power BI | SQL | Python
