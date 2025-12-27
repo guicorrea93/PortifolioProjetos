@@ -2,6 +2,8 @@
 
 ![Thumbnail do Dashboard](data/thumbnail.png)
 
+👉 [**Visualizar Dashboard**]([https://app.powerbi.com/view?r=eyJrIjoiNWJkNzQyMzUtOTcxMC00NDI2LWJiNTUtMDRkMTMzNjVjZGRmIiwidCI6IjhjYzJkZWQ2LWEzYjktNDk4My04ZDcxLTY3OGZjN2E2NjRiZSJ9](https://guicorrea93.github.io/PortifolioProjetos/projeto_2/report/))
+
 Este projeto apresenta uma **análise exploratória de dados (EDA)** completa sobre o dataset **Sample Superstore**, combinando **Python para processamento e análise** com um **relatório interativo em HTML** para visualização executiva dos resultados.
 
 O foco não é apenas gerar gráficos, mas **contar a história dos dados**, explorando vendas, lucro, clientes, descontos, logística e concentração de receita de forma clara e acionável.
