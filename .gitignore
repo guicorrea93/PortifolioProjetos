@@ -1,0 +1,12 @@
+# ambientes
+.venv/
+venv/
+
+# arquivos grandes de ML (não versionar)
+projeto_4/models/
+projeto_4/data/processed/
+
+# opcionais comuns
+__pycache__/
+*.pyc
+.DS_Store
