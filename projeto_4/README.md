@@ -1,6 +1,6 @@
 # 🪐📊 Rossmann Sales Prediction — Forecasting com Machine Learning
 
-👉 **Visualizar Relatório Interativo (HTML)**  
+👉 [**Visualizar Dashboard**](https://guicorrea93.github.io/PortifolioProjetos/projeto_4/)
 📊 Parte 1 — Exploração & Preparação de Dados  
 🤖 Parte 2 — Modelagem Preditiva e Resultados  
 
