@@ -1,6 +1,6 @@
 # 🪐📊 Rossmann Sales Prediction — Forecasting com Machine Learning
 
-![Thumbnail do Dashboard](data/thumbnail.png)
+![Thumbnail do Dashboard](images/thumbnail.png)
 
 👉 [**Visualizar Dashboard**](https://guicorrea93.github.io/PortifolioProjetos/projeto_4/)
 
