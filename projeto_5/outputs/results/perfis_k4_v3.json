@@ -1,0 +1,50 @@
+{
+  "0": {
+    "n": 383,
+    "pct": 7.4,
+    "pib_pc_medio": 35498.0,
+    "ids_medio": 0.462,
+    "pop_mediana": 100568.0,
+    "regioes": {
+      "Sudeste": 174,
+      "Sul": 96,
+      "Nordeste": 93
+    }
+  },
+  "1": {
+    "n": 899,
+    "pct": 17.3,
+    "pib_pc_medio": 32903.0,
+    "ids_medio": 0.471,
+    "pop_mediana": 3519.0,
+    "regioes": {
+      "Sul": 306,
+      "Sudeste": 248,
+      "Centro-Oeste": 131
+    }
+  },
+  "2": {
+    "n": 1912,
+    "pct": 36.7,
+    "pib_pc_medio": 24611.0,
+    "ids_medio": 0.496,
+    "pop_mediana": 14128.0,
+    "regioes": {
+      "Nordeste": 621,
+      "Sudeste": 602,
+      "Sul": 418
+    }
+  },
+  "3": {
+    "n": 2010,
+    "pct": 38.6,
+    "pib_pc_medio": 17166.0,
+    "ids_medio": 0.411,
+    "pop_mediana": 12407.0,
+    "regioes": {
+      "Nordeste": 846,
+      "Sudeste": 540,
+      "Sul": 321
+    }
+  }
+}

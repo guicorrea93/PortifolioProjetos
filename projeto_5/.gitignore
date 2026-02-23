@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Dados grandes (não versionar)
+data/raw/*.csv
+data/raw/*.xlsx
+data/raw/*.zip
+data/processed/*.csv
+
+# Outputs (manter estrutura, não arquivos)
+outputs/figures/*.png
+outputs/figures/*.jpg
+outputs/figures/*.html
+outputs/results/*.csv
+
+# Sistema
+.DS_Store
+Thumbs.db

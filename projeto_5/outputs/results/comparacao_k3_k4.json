@@ -1,0 +1,27 @@
+{
+  "K=3": {
+    "silhouette": 0.1423,
+    "davies_bouldin": 1.9699,
+    "calinski": 979.2,
+    "n_clusters": 3,
+    "distribuicao": {
+      "0": 2154,
+      "1": 545,
+      "2": 2505
+    },
+    "max_cluster_pct": 48.1
+  },
+  "K=4": {
+    "silhouette": 0.1356,
+    "davies_bouldin": 1.8478,
+    "calinski": 981.8,
+    "n_clusters": 4,
+    "distribuicao": {
+      "0": 383,
+      "1": 899,
+      "2": 1912,
+      "3": 2010
+    },
+    "max_cluster_pct": 38.6
+  }
+}

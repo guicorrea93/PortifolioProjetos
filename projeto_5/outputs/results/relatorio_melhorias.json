@@ -1,0 +1,33 @@
+{
+  "melhor_algoritmo": "KMeans (K=3)",
+  "feature_set": "V3 (expandido)",
+  "n_clusters": 3,
+  "silhouette_original": 0.1681,
+  "silhouette_melhorado": 0.17404671717954606,
+  "melhoria_pct": 3.5376068884866525,
+  "estabilidade_ari_v1": 0.9717747792213504,
+  "estabilidade_ari_v3": 0.9921492085927902,
+  "ensemble_k": 4,
+  "ensemble_silhouette": 0.16747523652863897,
+  "ensemble_composite": 0.1573939759264389,
+  "features_utilizadas": [
+    "log_populacao",
+    "log_densidade",
+    "pib_per_capita",
+    "taxa_alfabetizacao",
+    "mortalidade_infantil",
+    "esgoto_adequado",
+    "saude_per_10k",
+    "indice_desenvolvimento_social",
+    "indice_infraestrutura",
+    "urbanizacao_proxy"
+  ],
+  "n_combinacoes_testadas": 78,
+  "balanceamento": 0.8677855333603407,
+  "distribuicao_clusters": {
+    "0": 2154,
+    "1": 545,
+    "2": 2505
+  },
+  "nota": "Score composto penaliza clusters desbalanceados para garantir representatividade"
+}

@@ -1,0 +1,94 @@
+================================================================================
+RELATÓRIO EXECUTIVO - CLUSTERIZAÇÃO DE MUNICÍPIOS BRASILEIROS
+================================================================================
+
+Data da Análise: 25/01/2026 14:06
+
+────────────────────────────────────────────────────────────────────────────────
+1. RESUMO EXECUTIVO
+────────────────────────────────────────────────────────────────────────────────
+
+• Total de municípios analisados: 5,204
+• Número de features utilizadas: 7
+• Algoritmo selecionado: KMeans + PCA
+• Número de clusters identificados: 4
+
+Métricas do modelo vencedor:
+  - Silhouette Score: 0.1681
+  - Davies-Bouldin Index: 1.5545
+  - Calinski-Harabasz Score: 1158.24
+  - Tempo de execução: 0.71s
+
+────────────────────────────────────────────────────────────────────────────────
+2. METODOLOGIA
+────────────────────────────────────────────────────────────────────────────────
+
+Algoritmos testados:
+  1. KMeans
+  2. KMeans + PCA
+  3. Agglomerative (K=4)
+  4. GMM (K=2)
+
+Features utilizadas:
+  1. log_populacao
+  2. log_densidade
+  3. pib_per_capita
+  4. taxa_alfabetizacao
+  5. mortalidade_infantil
+  6. esgoto_adequado
+  7. saude_per_10k
+
+────────────────────────────────────────────────────────────────────────────────
+3. PERFIL DOS CLUSTERS
+────────────────────────────────────────────────────────────────────────────────
+
+CLUSTER 0
+  • Tamanho: 1,024 municípios (19.7%)
+  • Região predominante: Sul (37.0%)
+  • Características principais:
+    - log_populacao: BAIXO
+    - log_densidade: BAIXO
+    - pib_per_capita: ALTO
+
+CLUSTER 1
+  • Tamanho: 1,154 municípios (22.2%)
+  • Região predominante: Sudeste (36.4%)
+  • Características principais:
+    - log_populacao: ALTO
+    - log_densidade: ALTO
+
+CLUSTER 2
+  • Tamanho: 1,499 municípios (28.8%)
+  • Região predominante: Nordeste (41.8%)
+  • Características principais:
+    - pib_per_capita: BAIXO
+
+CLUSTER 3
+  • Tamanho: 1,527 municípios (29.3%)
+  • Região predominante: Nordeste (40.1%)
+  • Características principais:
+    - pib_per_capita: BAIXO
+
+────────────────────────────────────────────────────────────────────────────────
+4. RECOMENDAÇÕES
+────────────────────────────────────────────────────────────────────────────────
+
+Com base na análise realizada, recomenda-se:
+
+1. Validação dos clusters com especialistas de domínio
+2. Atribuição de nomes descritivos para cada cluster
+3. Análise aprofundada dos municípios com baixo silhouette score
+4. Aplicação dos clusters em análises subsequentes
+
+────────────────────────────────────────────────────────────────────────────────
+5. ARQUIVOS GERADOS
+────────────────────────────────────────────────────────────────────────────────
+
+• municipios_clusterizados_final.csv
+• municipios_clusters_simples.csv
+• Múltiplas visualizações (.png e .html)
+• Modelos treinados salvos para reprodução
+
+================================================================================
+FIM DO RELATÓRIO
+================================================================================

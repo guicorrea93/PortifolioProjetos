@@ -1,0 +1,29 @@
+{
+  "features_selecionadas": [
+    "log_populacao",
+    "log_densidade",
+    "pib_per_capita",
+    "taxa_alfabetizacao",
+    "mortalidade_infantil",
+    "esgoto_adequado",
+    "saude_per_10k"
+  ],
+  "n_features": 7,
+  "categorias": {
+    "Demográficas": [
+      "log_populacao",
+      "log_densidade"
+    ],
+    "Econômicas": [
+      "pib_per_capita"
+    ],
+    "Sociais": [
+      "taxa_alfabetizacao",
+      "mortalidade_infantil"
+    ],
+    "Infraestrutura": [
+      "esgoto_adequado",
+      "saude_per_10k"
+    ]
+  }
+}

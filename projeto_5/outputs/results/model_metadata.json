@@ -1,0 +1,26 @@
+{
+  "k_clusters": 4,
+  "n_municipios": 5204,
+  "n_features": 7,
+  "features": [
+    "log_populacao",
+    "log_densidade",
+    "pib_per_capita",
+    "taxa_alfabetizacao",
+    "mortalidade_infantil",
+    "esgoto_adequado",
+    "saude_per_10k"
+  ],
+  "random_state": 42,
+  "metricas": {
+    "inertia": 24804.405693530603,
+    "silhouette": 0.15134767935359592,
+    "davies_bouldin": 1.79194366518254,
+    "calinski_harabasz": 812.2574559325877,
+    "qualidade": "Fraco"
+  },
+  "pca_2d_variance": 0.4550290231080889,
+  "pca_3d_variance": 0.5989002725785324,
+  "training_time_seconds": 2.555873155593872,
+  "data_treinamento": "2026-01-23 07:27:31"
+}

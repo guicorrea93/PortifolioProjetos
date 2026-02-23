@@ -1,0 +1,9 @@
+{
+  "mapeamento": {
+    "0": "Municípios Rurais em Desenvolvimento",
+    "1": "Municípios de Porte Médio Desenvolvidos",
+    "2": "Pequenos Municípios com Boa Infraestrutura",
+    "3": "Municípios de Agronegócio Próspero"
+  },
+  "descricao": "Mapeamento de ID do cluster para nome descritivo"
+}

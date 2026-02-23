@@ -1,0 +1,51 @@
+{
+  "data_analise": "2026-01-20 16:29:54",
+  "shapefile_usado": true,
+  "distribuicao_por_regiao": {
+    "Norte": {
+      "total_municipios": 391,
+      "clusters": {
+        "Municípios Rurais em Desenvolvimento": 254,
+        "Pequenos Municípios com Boa Infraestrutura": 58,
+        "Municípios de Porte Médio Desenvolvidos": 55,
+        "Municípios de Agronegócio Próspero": 24
+      }
+    },
+    "Nordeste": {
+      "total_municipios": 1684,
+      "clusters": {
+        "Municípios Rurais em Desenvolvimento": 1075,
+        "Municípios de Porte Médio Desenvolvidos": 460,
+        "Pequenos Municípios com Boa Infraestrutura": 114,
+        "Municípios de Agronegócio Próspero": 35
+      }
+    },
+    "Sudeste": {
+      "total_municipios": 1564,
+      "clusters": {
+        "Municípios Rurais em Desenvolvimento": 813,
+        "Municípios de Porte Médio Desenvolvidos": 417,
+        "Pequenos Municípios com Boa Infraestrutura": 214,
+        "Municípios de Agronegócio Próspero": 120
+      }
+    },
+    "Sul": {
+      "total_municipios": 1141,
+      "clusters": {
+        "Municípios Rurais em Desenvolvimento": 448,
+        "Municípios de Porte Médio Desenvolvidos": 245,
+        "Municípios de Agronegócio Próspero": 240,
+        "Pequenos Municípios com Boa Infraestrutura": 208
+      }
+    },
+    "Centro-Oeste": {
+      "total_municipios": 424,
+      "clusters": {
+        "Municípios Rurais em Desenvolvimento": 190,
+        "Municípios de Agronegócio Próspero": 122,
+        "Pequenos Municípios com Boa Infraestrutura": 69,
+        "Municípios de Porte Médio Desenvolvidos": 43
+      }
+    }
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "data_analise": "2026-01-23 07:29:17",
+  "n_clusters": 4,
+  "n_municipios_total": 5204,
+  "qualidade_clustering": "Fraco",
+  "silhouette_score": 0.15134767935359592,
+  "clusters": [
+    {
+      "id": 0,
+      "nome": "Municípios Rurais em Desenvolvimento",
+      "n_municipios": 2780,
+      "percentual": 53.420445810914686,
+      "caracteristicas": {
+        "populacao_media": 12945.06510791367,
+        "pib_per_capita_medio": 21127.16146558538,
+        "densidade_media": 27.353129861107437,
+        "taxa_alfabetizacao": 85.14036988735857,
+        "esgoto_adequado": 60.368035126967555
+      },
+      "distribuicao_geografica": {
+        "Nordeste": 1075,
+        "Sudeste": 813,
+        "Sul": 448,
+        "Norte": 254,
+        "Centro-Oeste": 190
+      },
+      "top_5_municipios": [
+        "Paragominas",
+        "Corumbá",
+        "Cáceres",
+        "Tefé",
+        "Casa Nova"
+      ]
+    },
+    {
+      "id": 1,
+      "nome": "Municípios de Porte Médio Desenvolvidos",
+      "n_municipios": 1220,
+      "percentual": 23.443504996156804,
+      "caracteristicas": {
+        "populacao_media": 67989.5524590164,
+        "pib_per_capita_medio": 30204.56973136417,
+        "densidade_media": 192.18443263318298,
+        "taxa_alfabetizacao": 85.48981325444248,
+        "esgoto_adequado": 61.57391889259216
+      },
+      "distribuicao_geografica": {
+        "Nordeste": 460,
+        "Sudeste": 417,
+        "Sul": 245,
+        "Norte": 55,
+        "Centro-Oeste": 43
+      },
+      "top_5_municipios": [
+        "Montes Claros",
+        "Anápolis",
+        "Petrolina",
+        "Caruaru",
+        "Vitória da Conquista"
+      ]
+    },
+    {
+      "id": 2,
+      "nome": "Pequenos Municípios com Boa Infraestrutura",
+      "n_municipios": 663,
+      "percentual": 12.740199846272098,
+      "caracteristicas": {
+        "populacao_media": 3709.63197586727,
+        "pib_per_capita_medio": 30708.474351123376,
+        "densidade_media": 18.710203942702506,
+        "taxa_alfabetizacao": 85.34626141489821,
+        "esgoto_adequado": 61.261114006536786
+      },
+      "distribuicao_geografica": {
+        "Sudeste": 214,
+        "Sul": 208,
+        "Nordeste": 114,
+        "Centro-Oeste": 69,
+        "Norte": 58
+      },
+      "top_5_municipios": [
+        "Tamarana",
+        "Praia Norte",
+        "Colméia",
+        "Queluz",
+        "Januário Cicco"
+      ]
+    },
+    {
+      "id": 3,
+      "nome": "Municípios de Agronegócio Próspero",
+      "n_municipios": 541,
+      "percentual": 10.395849346656417,
+      "caracteristicas": {
+        "populacao_media": 14106.325323475046,
+        "pib_per_capita_medio": 79461.88905786586,
+        "densidade_media": 27.42218950284669,
+        "taxa_alfabetizacao": 86.17014892807292,
+        "esgoto_adequado": 63.71786420856305
+      },
+      "distribuicao_geografica": {
+        "Sul": 240,
+        "Centro-Oeste": 122,
+        "Sudeste": 120,
+        "Nordeste": 35,
+        "Norte": 24
+      },
+      "top_5_municipios": [
+        "Três Lagoas",
+        "Sorriso",
+        "Catalão",
+        "Nova Lima",
+        "Itabira"
+      ]
+    }
+  ]
+}

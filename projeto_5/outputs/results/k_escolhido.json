@@ -1,0 +1,12 @@
+{
+  "k_escolhido": 4,
+  "metricas": {
+    "silhouette": 0.1516093050888137,
+    "davies_bouldin": 1.7918204109219258,
+    "calinski_harabasz": 812.1478223025179,
+    "inertia": 24805.545480928984
+  },
+  "votos": 2,
+  "qualidade": "FRACO ❌",
+  "justificativa": "Melhor desempenho em 2 de 4 métricas de validação"
+}

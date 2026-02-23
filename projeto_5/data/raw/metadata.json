@@ -1,0 +1,30 @@
+{
+  "data_coleta": "2026-01-23 07:17:58",
+  "n_municipios": 5565,
+  "n_colunas": 14,
+  "colunas": [
+    "codigo_ibge",
+    "nome_municipio",
+    "uf",
+    "nome_uf",
+    "regiao",
+    "populacao",
+    "pib_milhoes",
+    "area_km2",
+    "pib_per_capita",
+    "taxa_alfabetizacao",
+    "mortalidade_infantil",
+    "esgoto_adequado",
+    "estabelecimentos_saude",
+    "densidade"
+  ],
+  "ano_populacao": 2022,
+  "ano_pib": 2021,
+  "fontes": [
+    "API IBGE Localidades",
+    "API SIDRA - Tabela 6579 (População)",
+    "API SIDRA - Tabela 5938 (PIB)",
+    "API SIDRA - Tabela 1301 (Área)"
+  ],
+  "nota": "Indicadores complementares são sintéticos para fins didáticos"
+}

@@ -1,0 +1,18 @@
+{
+  "municipios_original": 5565,
+  "municipios_final": 5204,
+  "municipios_removidos": 361,
+  "features_selecionadas": [
+    "log_populacao",
+    "log_densidade",
+    "pib_per_capita",
+    "taxa_alfabetizacao",
+    "mortalidade_infantil",
+    "esgoto_adequado",
+    "saude_per_10k"
+  ],
+  "n_features": 7,
+  "metodo_normalizacao": "StandardScaler",
+  "outliers_removidos": 361,
+  "percentual_outliers": "6.49%"
+}

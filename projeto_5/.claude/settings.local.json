@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tree:*)",
+      "Bash(dir:*)",
+      "Bash(pip install:*)",
+      "Bash(where:*)",
+      "Bash(python:*)",
+      "Bash(where.exe:*)",
+      "Bash(powershell.exe -Command \"Get-Command python -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source; Get-Command python3 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source; Get-Command py -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source\")",
+      "Bash(powershell.exe -Command \"cd ''c:\\\\Users\\\\guilhermecorrea\\\\Downloads\\\\Gui\\\\Projetos\\\\PortifolioProjetos\\\\projeto_5''; py scripts/gerar_mapas_relatorio.py\")",
+      "Bash(C:WINDOWSpy.exe -c \"import pandas as pd; df=pd.read_csv\\(''outputs/results/municipios_clusters_melhorado.csv''\\); print\\(f''Shape: {df.shape}''\\); print\\(f''Columns: {list\\(df.columns\\)}''\\); print\\(f''Regioes: {df[\"\"regiao\"\"].value_counts\\(\\).to_dict\\(\\)}''\\); print\\(f''NAs: {df.isnull\\(\\).sum\\(\\).sum\\(\\)}''\\)\")",
+      "Bash(py -c:*)",
+      "Bash(py -m jupyter nbconvert:*)",
+      "Bash(ls:*)",
+      "Bash(python3:*)",
+      "Bash(py:*)",
+      "Bash(du -sh:*)",
+      "Bash(grep:*)",
+      "Bash(sort:*)"
+    ]
+  }
+}

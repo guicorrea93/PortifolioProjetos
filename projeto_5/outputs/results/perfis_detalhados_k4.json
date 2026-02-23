@@ -1,0 +1,90 @@
+{
+  "0": {
+    "n": 383,
+    "pct": 7.4,
+    "pib_pc_mediano": 35498.0,
+    "pop_mediana": 100568.0,
+    "ids_medio": 0.462,
+    "esgoto_medio": 60.9,
+    "mortalidade_media": 19.5,
+    "alfabetizacao_media": 85.5,
+    "top_regioes": {
+      "Sudeste": 174,
+      "Sul": 96,
+      "Nordeste": 93
+    },
+    "top_ufs": {
+      "SP": 96,
+      "MG": 46,
+      "SC": 37,
+      "RS": 32,
+      "PR": 27
+    }
+  },
+  "1": {
+    "n": 899,
+    "pct": 17.3,
+    "pib_pc_mediano": 32903.0,
+    "pop_mediana": 3519.0,
+    "ids_medio": 0.471,
+    "esgoto_medio": 62.0,
+    "mortalidade_media": 19.5,
+    "alfabetizacao_media": 85.5,
+    "top_regioes": {
+      "Sul": 306,
+      "Sudeste": 248,
+      "Centro-Oeste": 131
+    },
+    "top_ufs": {
+      "RS": 173,
+      "MG": 155,
+      "SP": 93,
+      "GO": 87,
+      "TO": 76
+    }
+  },
+  "2": {
+    "n": 1912,
+    "pct": 36.7,
+    "pib_pc_mediano": 24611.0,
+    "pop_mediana": 14128.0,
+    "ids_medio": 0.496,
+    "esgoto_medio": 65.1,
+    "mortalidade_media": 19.6,
+    "alfabetizacao_media": 85.6,
+    "top_regioes": {
+      "Nordeste": 621,
+      "Sudeste": 602,
+      "Sul": 418
+    },
+    "top_ufs": {
+      "MG": 313,
+      "SP": 224,
+      "BA": 162,
+      "PR": 159,
+      "RS": 155
+    }
+  },
+  "3": {
+    "n": 2010,
+    "pct": 38.6,
+    "pib_pc_mediano": 17166.0,
+    "pop_mediana": 12407.0,
+    "ids_medio": 0.411,
+    "esgoto_medio": 57.0,
+    "mortalidade_media": 19.8,
+    "alfabetizacao_media": 85.0,
+    "top_regioes": {
+      "Nordeste": 846,
+      "Sudeste": 540,
+      "Sul": 321
+    },
+    "top_ufs": {
+      "MG": 309,
+      "BA": 214,
+      "SP": 179,
+      "PR": 143,
+      "PB": 111
+    }
+  }
+}
