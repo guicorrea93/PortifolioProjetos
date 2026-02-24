@@ -2,6 +2,8 @@
 
 ![Thumbnail do Projeto](data/thumbnail.png)
 
+👉 [**Visualizar Dashboard**](https://guicorrea93.github.io/PortifolioProjetos/projeto_5/)
+
 ## 📌 Visão Geral
 Este projeto apresenta uma **análise completa de segmentação territorial do Brasil**, construída de ponta a ponta:  
 **desde a coleta de dados via API do IBGE**, passando por **tratamento, feature engineering e avaliação de múltiplos algoritmos**, até a entrega de um **relatório interativo com visualizações dinâmicas**.
