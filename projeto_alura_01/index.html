@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Regressao Linear - Transformacao de Variaveis | Guilherme Correa</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.1.0/dist/chartjs-plugin-annotation.min.js"></script>
+  <style>
+    :root {
+      --bg: #111827;
+      --surface: #1F2937;
+      --text: #E5E7EB;
+      --text-2: #CBD5E1;
+      --muted: #94A3B8;
+      --accent: #F28C28;
+      --success: #1B7F5C;
+      --accent-soft: #F7BA7E;
+      --success-soft: #8DBFAE;
+      --radius: 16px;
+      --border: rgba(148, 163, 184, 0.22);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif; line-height: 1.6; }
+
+    /* Topbar */
+    .topbar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(17,24,39,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0.75rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+    .topbar a { color: var(--muted); text-decoration: none; font-size: 0.875rem; font-weight: 600; transition: var(--transition); }
+    .topbar a:hover { color: var(--accent); }
+    .topbar .logo { color: var(--text); font-weight: 800; font-size: 1.1rem; letter-spacing: -0.02em; }
+    .topbar .logo span { color: var(--accent); }
+
+    /* Hero */
+    .hero { padding: 8rem 2rem 4rem; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; top: -50%; left: 50%; transform: translateX(-50%); width: 600px; height: 600px; background: radial-gradient(circle, rgba(242,140,40,0.08) 0%, transparent 70%); pointer-events: none; }
+    .hero .badge { display: inline-block; background: rgba(27,127,92,0.15); color: var(--success-soft); padding: 0.4rem 1rem; border-radius: 999px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 1.5rem; border: 1px solid rgba(27,127,92,0.3); }
+    .hero h1 { font-size: clamp(2rem, 5vw + 1rem, 3.25rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 1rem; color: rgba(255,255,255,0.95); }
+    .hero h1 span { color: var(--accent); }
+    .hero .lead { font-size: clamp(0.95rem, 1.5vw + 0.25rem, 1.15rem); color: var(--text-2); max-width: 700px; margin: 0 auto 2rem; }
+    .hero-tags { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
+    .hero-tags span { background: var(--surface); color: var(--muted); padding: 0.35rem 0.85rem; border-radius: 999px; font-size: 0.78rem; font-weight: 600; border: 1px solid var(--border); }
+
+    /* Layout */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+    section { padding: 4rem 0; }
+    .section-label { display: inline-block; color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.75rem; }
+    .section-title { font-size: clamp(1.5rem, 3vw + 0.5rem, 2rem); font-weight: 700; letter-spacing: -0.01em; margin-bottom: 1.5rem; color: rgba(255,255,255,0.95); }
+    .section-desc { color: var(--text-2); max-width: 700px; margin-bottom: 2.5rem; font-size: 0.95rem; }
+    .sub-title { font-size: 1.05rem; font-weight: 700; margin: 2.5rem 0 1rem; color: var(--text); }
+    .sub-desc { color: var(--muted); font-size: 0.85rem; margin: -0.5rem 0 1.25rem; }
+    .divider { height: 1px; background: linear-gradient(to right, transparent, var(--border), transparent); margin: 3rem 0; }
+
+    /* Cards & Grids */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; transition: var(--transition); }
+    .card:hover { border-color: rgba(242,140,40,0.3); box-shadow: 0 10px 40px rgba(242,140,40,0.08); }
+    .card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--text); }
+    .card p { color: var(--text-2); font-size: 0.9rem; }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+
+    /* Pipeline */
+    .pipeline { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 3rem; }
+    .step { flex: 1; min-width: 180px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; transition: var(--transition); }
+    .step:hover { border-color: rgba(242,140,40,0.3); transform: translateY(-2px); }
+    .step-number { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent-soft)); color: var(--bg); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; margin-bottom: 1rem; }
+    .step h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text); }
+    .step p { color: var(--muted); font-size: 0.82rem; }
+
+    /* Metrics */
+    .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; margin: 2rem 0; }
+    .metric { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; text-align: center; transition: var(--transition); }
+    .metric:hover { border-color: rgba(27,127,92,0.4); box-shadow: 0 10px 40px rgba(27,127,92,0.1); }
+    .metric .value { font-size: 2rem; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; }
+    .metric .label { font-size: 0.8rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.25rem; }
+
+    /* Tables */
+    .table-wrapper { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); margin: 1.5rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    th, td { padding: 0.75rem 1rem; text-align: center; border-bottom: 1px solid var(--border); }
+    th { background: rgba(242,140,40,0.08); color: var(--accent); font-weight: 700; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
+    td { color: var(--text-2); background: var(--surface); }
+    td.positive { color: var(--success-soft); } td.negative { color: #EF4444; } td.strong { font-weight: 700; }
+    td.highlight { color: var(--accent); font-weight: 700; } td.left { text-align: left; } th.left { text-align: left; }
+    td.sig { color: var(--success-soft); font-weight: 700; } td.not-sig { color: #EF4444; font-weight: 700; }
+    .hm-strong-pos { background: rgba(27,127,92,0.25); color: var(--success-soft); font-weight: 700; }
+    .hm-mod-pos { background: rgba(27,127,92,0.12); color: var(--success-soft); }
+    .hm-weak-pos { background: rgba(27,127,92,0.05); color: var(--text-2); }
+    .hm-neutral { background: var(--surface); color: var(--muted); }
+    .hm-weak-neg { background: rgba(239,68,68,0.05); color: var(--text-2); }
+    .hm-mod-neg { background: rgba(239,68,68,0.12); color: #F87171; }
+    .hm-strong-neg { background: rgba(239,68,68,0.25); color: #EF4444; font-weight: 700; }
+    .hm-diag { background: rgba(242,140,40,0.15); color: var(--accent); font-weight: 800; }
+
+    /* Coeff cards */
+    .coeff-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; display: flex; align-items: flex-start; gap: 1rem; transition: var(--transition); }
+    .coeff-card:hover { border-color: rgba(242,140,40,0.3); }
+    .coeff-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0; }
+    .coeff-icon.up { background: rgba(27,127,92,0.15); } .coeff-icon.down { background: rgba(239,68,68,0.12); }
+    .coeff-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.35rem; }
+    .coeff-card .coeff-value { font-size: 1.25rem; font-weight: 800; color: var(--accent); margin-bottom: 0.35rem; }
+    .coeff-card p { color: var(--muted); font-size: 0.82rem; }
+
+    /* Prediction box */
+    .prediction-box { background: linear-gradient(135deg, rgba(27,127,92,0.12), rgba(242,140,40,0.08)); border: 1px solid rgba(242,140,40,0.25); border-radius: var(--radius); padding: 2.5rem; text-align: center; margin: 2rem 0; }
+    .prediction-box .price { font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; color: var(--accent); letter-spacing: -0.02em; }
+    .prediction-box .subtitle { color: var(--muted); font-size: 0.9rem; margin-top: 0.5rem; }
+    .prediction-specs { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem; }
+    .prediction-specs .spec { background: rgba(255,255,255,0.05); padding: 0.5rem 1rem; border-radius: 999px; font-size: 0.82rem; color: var(--text-2); border: 1px solid var(--border); }
+    .prediction-specs .spec strong { color: var(--text); }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 0.5rem; margin-bottom: 2.5rem; border-bottom: 2px solid var(--border); padding-bottom: 0; }
+    .tab { padding: 0.75rem 1.5rem; font-size: 0.9rem; font-weight: 700; color: var(--muted); cursor: pointer; border: none; background: none; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: var(--transition); font-family: inherit; }
+    .tab:hover { color: var(--text); }
+    .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .tab-content { display: none; } .tab-content.active { display: block; }
+
+    /* Tech */
+    .tech-stack { display: flex; gap: 0.75rem; flex-wrap: wrap; margin: 1.5rem 0; }
+    .tech-badge { background: rgba(242,140,40,0.1); color: var(--accent-soft); border: 1px solid rgba(242,140,40,0.25); padding: 0.4rem 1rem; border-radius: 999px; font-size: 0.8rem; font-weight: 600; }
+    .tech-badge.green { background: rgba(27,127,92,0.12); color: var(--success-soft); border-color: rgba(27,127,92,0.3); }
+
+    /* Formula */
+    .formula-box { background: rgba(139,92,246,0.08); border: 1px solid rgba(139,92,246,0.25); border-radius: var(--radius); padding: 1.5rem 2rem; text-align: center; margin: 1.5rem 0; font-family: 'Georgia', serif; font-size: 1.05rem; color: #A78BFA; letter-spacing: 0.02em; overflow-x: auto; }
+
+    /* Charts */
+    .chart-container { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin: 1.5rem 0; position: relative; }
+    .chart-container canvas { max-height: 400px; }
+    .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+    .chart-row .chart-container { margin: 0; }
+    .chart-quad { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+    .chart-quad .chart-container { margin: 0; }
+    .chart-container.tall canvas { max-height: 500px; }
+
+    /* Boxplot custom */
+    .boxplot-visual { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem 1.5rem; margin: 1.5rem 0; }
+    .boxplot-bar { position: relative; height: 60px; margin: 1rem 0; }
+    .boxplot-range { position: absolute; top: 50%; transform: translateY(-50%); height: 2px; background: var(--muted); }
+    .boxplot-whisker { position: absolute; top: 25%; height: 50%; width: 2px; background: var(--muted); }
+    .boxplot-box { position: absolute; top: 10%; height: 80%; background: rgba(242,140,40,0.2); border: 2px solid var(--accent); border-radius: 4px; }
+    .boxplot-median { position: absolute; top: 10%; height: 80%; width: 3px; background: var(--accent); border-radius: 2px; }
+    .boxplot-labels { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--muted); margin-top: 0.25rem; }
+    .boxplot-stat { position: absolute; top: -22px; transform: translateX(-50%); font-size: 0.7rem; color: var(--accent-soft); font-weight: 700; white-space: nowrap; }
+
+    /* Analysis note boxes */
+    .analysis-note { background: rgba(139,92,246,0.06); border-left: 3px solid #8B5CF6; border-radius: 0 var(--radius) var(--radius) 0; padding: 1rem 1.5rem; margin: 1.5rem 0; font-size: 0.88rem; color: var(--text-2); }
+    .analysis-note strong { color: #A78BFA; }
+
+    /* Footer */
+    footer { text-align: center; padding: 3rem 2rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.82rem; }
+    footer a { color: var(--accent); text-decoration: none; font-weight: 600; }
+    footer a:hover { color: var(--accent-soft); }
+
+    @media (max-width: 768px) {
+      .topbar { padding: 0.75rem 1rem; } .hero { padding: 6rem 1rem 3rem; } .container { padding: 0 1rem; }
+      .pipeline { flex-direction: column; } .tabs { overflow-x: auto; }
+      .tab { white-space: nowrap; font-size: 0.82rem; padding: 0.6rem 1rem; }
+      .chart-row, .chart-quad { grid-template-columns: 1fr; } .grid-2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="topbar">
+    <a href="https://guicorrea93.github.io/" class="logo">gui<span>.</span>correa</a>
+    <a href="https://guicorrea93.github.io/">Voltar ao Portfolio</a>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="badge">Estudo Alura</div>
+    <h1>Regressao Linear<br><span>Transformacao de Variaveis</span></h1>
+    <p class="lead">
+      Construcao de modelos de regressao linear multipla com transformacao logaritmica
+      para precificacao de imoveis e hospedagens - analise exploratoria completa,
+      visualizacoes, correlacoes, residuos e interpretacao de coeficientes.
+    </p>
+    <div class="hero-tags">
+      <span>Python</span><span>Pandas</span><span>Scikit-learn</span><span>Statsmodels</span>
+      <span>Seaborn</span><span>NumPy</span><span>Machine Learning</span>
+    </div>
+  </header>
+
+  <!-- Pipeline -->
+  <section>
+    <div class="container">
+      <span class="section-label">Metodologia</span>
+      <h2 class="section-title">Pipeline do Projeto</h2>
+      <div class="pipeline">
+        <div class="step"><div class="step-number">1</div><h4>Coleta</h4><p>Leitura dos datasets via Kaggle/GitHub</p></div>
+        <div class="step"><div class="step-number">2</div><h4>Exploracao</h4><p>Correlacao, estatisticas descritivas e padroes</p></div>
+        <div class="step"><div class="step-number">3</div><h4>Visualizacao</h4><p>Boxplots, histogramas, pairplots e regplots</p></div>
+        <div class="step"><div class="step-number">4</div><h4>Transformacao</h4><p>Log natural (ln) para normalizar assimetria</p></div>
+        <div class="step"><div class="step-number">5</div><h4>Modelagem</h4><p>Regressao multipla com avaliacao completa</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Techniques -->
+  <section>
+    <div class="container">
+      <span class="section-label">Tecnicas Utilizadas</span>
+      <h2 class="section-title">Fundamentos e Ferramentas</h2>
+      <div class="grid-3">
+        <div class="card"><h3>Analise de Correlacao</h3><p>Medicao de Pearson (-1 a 1) entre variaveis para identificar features mais influentes no preco.</p></div>
+        <div class="card"><h3>Transformacao Logaritmica</h3><p>np.log e np.log1p para normalizar distribuicoes assimetricas e linearizar relacoes nao-lineares.</p></div>
+        <div class="card"><h3>Modelo Log-Log</h3><p>Regressao com Y e X em log. Coeficientes interpretados como elasticidades percentuais.</p></div>
+        <div class="card"><h3>Train/Test Split</h3><p>Divisao 70/30 com random_state fixo para avaliacao da generalizacao do modelo.</p></div>
+        <div class="card"><h3>OLS com Statsmodels</h3><p>Minimos Quadrados com p-valores, IC 95%, F-statistic, AIC e teste de significancia.</p></div>
+        <div class="card"><h3>Analise de Residuos</h3><p>Homocedasticidade, normalidade dos residuos e grafico Previsao vs Real.</p></div>
+      </div>
+      <div style="margin-top: 3rem;">
+        <span class="section-label">Stack</span>
+        <h2 class="section-title">Tecnologias e Bibliotecas</h2>
+        <div class="tech-stack">
+          <span class="tech-badge">Python 3</span><span class="tech-badge green">Pandas</span>
+          <span class="tech-badge green">NumPy</span><span class="tech-badge">Scikit-learn</span>
+          <span class="tech-badge">Statsmodels</span><span class="tech-badge green">Seaborn</span>
+          <span class="tech-badge green">Matplotlib</span><span class="tech-badge">Jupyter Notebook</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- R2 Overview -->
+  <section>
+    <div class="container">
+      <span class="section-label">Visao Geral</span>
+      <h2 class="section-title">Comparacao de Performance dos Modelos</h2>
+      <p class="section-desc">R2 mede o quanto o modelo explica a variacao dos dados. Quanto mais proximo de 1, melhor o ajuste. Modelos com R2 de treino e teste proximos indicam boa generalizacao.</p>
+      <div class="chart-container">
+        <canvas id="chartR2Compare"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <div class="container"><div class="divider"></div></div>
+
+  <!-- ===================== TABBED RESULTS ===================== -->
+  <section>
+    <div class="container">
+      <span class="section-label">Estudo Completo</span>
+      <h2 class="section-title">Analise Detalhada com Graficos e Tabelas</h2>
+
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('estudo1', this)">Precificacao de Imoveis</button>
+        <button class="tab" onclick="switchTab('estudo2', this)">Desafio: Hospedagens</button>
+      </div>
+
+      <!-- ==================== TAB 1: IMOVEIS ==================== -->
+      <div id="estudo1" class="tab-content active">
+        <p class="section-desc">
+          Modelo de regressao linear multipla para estimar precos de casas com base em area,
+          presenca de segundo andar e distancia ao metro. Dataset adaptado do Kaggle House Prices.
+        </p>
+
+        <div class="metrics">
+          <div class="metric"><div class="value">1.460</div><div class="label">Registros</div></div>
+          <div class="metric"><div class="value">6</div><div class="label">Variaveis</div></div>
+          <div class="metric"><div class="value">0.759</div><div class="label">R2 Treino</div></div>
+          <div class="metric"><div class="value">0.738</div><div class="label">R2 Teste</div></div>
+        </div>
+
+        <!-- ===== AULA 1: Analises Preliminares ===== -->
+        <h3 class="sub-title">1. Conhecendo os Dados - Estatisticas Descritivas</h3>
+        <p class="sub-desc">Resumo estatistico do dataset original com 1.460 registros e 6 variaveis numericas.</p>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th class="left">Estatistica</th><th>Valor (R$)</th><th>Area 1o Andar (m2)</th><th>2o Andar</th><th>Quintal (m2)</th><th>Dist. Metro (km)</th><th>Dist. Parque (km)</th></tr></thead>
+            <tbody>
+              <tr><td class="left">Contagem</td><td>1.460</td><td>1.460</td><td>1.460</td><td>1.460</td><td>1.460</td><td>1.460</td></tr>
+              <tr><td class="left">Media</td><td class="highlight">904.605</td><td>108,01</td><td>0,43</td><td>29,47</td><td>2,77</td><td>8,15</td></tr>
+              <tr><td class="left">Desvio Padrao</td><td>397.212</td><td>35,92</td><td>0,50</td><td>12,23</td><td>1,91</td><td>4,20</td></tr>
+              <tr><td class="left">Minimo</td><td>174.500</td><td>31,03</td><td>0</td><td>0,00</td><td>0,10</td><td>0,12</td></tr>
+              <tr><td class="left">Q1 (25%)</td><td>649.875</td><td>81,94</td><td>0</td><td>22,18</td><td>1,42</td><td>4,44</td></tr>
+              <tr><td class="left">Mediana</td><td>815.000</td><td>100,98</td><td>0</td><td>27,64</td><td>2,26</td><td>8,72</td></tr>
+              <tr><td class="left">Q3 (75%)</td><td>1.070.000</td><td>129,25</td><td>1</td><td>36,18</td><td>3,89</td><td>11,63</td></tr>
+              <tr><td class="left">Maximo</td><td>3.775.000</td><td>435,90</td><td>1</td><td>170,29</td><td>12,65</td><td>15,00</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Correlacao -->
+        <h3 class="sub-title">1.1 Matriz de Correlacao Completa</h3>
+        <p class="sub-desc">Correlacao de Pearson entre todas as variaveis. Cores indicam forca e direcao da relacao linear.</p>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th></th><th>Valor</th><th>Area 1o</th><th>2o Andar</th><th>Quintal</th><th>Dist. Metro</th><th>Dist. Parque</th></tr></thead>
+            <tbody>
+              <tr><td class="left" style="font-weight:700;color:var(--text)">Valor</td><td class="hm-diag">1.000</td><td class="hm-strong-pos">0.606</td><td class="hm-weak-pos">0.138</td><td class="hm-strong-pos">0.614</td><td class="hm-strong-neg">-0.644</td><td class="hm-weak-neg">-0.071</td></tr>
+              <tr><td class="left" style="font-weight:700;color:var(--text)">Area 1o</td><td class="hm-strong-pos">0.606</td><td class="hm-diag">1.000</td><td class="hm-mod-neg">-0.339</td><td class="hm-strong-pos">0.820</td><td class="hm-mod-neg">-0.369</td><td class="hm-weak-neg">-0.058</td></tr>
+              <tr><td class="left" style="font-weight:700;color:var(--text)">2o Andar</td><td class="hm-weak-pos">0.138</td><td class="hm-mod-neg">-0.339</td><td class="hm-diag">1.000</td><td class="hm-mod-neg">-0.301</td><td class="hm-weak-neg">-0.191</td><td class="hm-neutral">-0.007</td></tr>
+              <tr><td class="left" style="font-weight:700;color:var(--text)">Quintal</td><td class="hm-strong-pos">0.614</td><td class="hm-strong-pos">0.820</td><td class="hm-mod-neg">-0.301</td><td class="hm-diag">1.000</td><td class="hm-mod-neg">-0.440</td><td class="hm-weak-neg">-0.058</td></tr>
+              <tr><td class="left" style="font-weight:700;color:var(--text)">Dist. Metro</td><td class="hm-strong-neg">-0.644</td><td class="hm-mod-neg">-0.369</td><td class="hm-weak-neg">-0.191</td><td class="hm-mod-neg">-0.440</td><td class="hm-diag">1.000</td><td class="hm-weak-pos">0.089</td></tr>
+              <tr><td class="left" style="font-weight:700;color:var(--text)">Dist. Parque</td><td class="hm-weak-neg">-0.071</td><td class="hm-weak-neg">-0.058</td><td class="hm-neutral">-0.007</td><td class="hm-weak-neg">-0.058</td><td class="hm-weak-pos">0.089</td><td class="hm-diag">1.000</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="chart-container">
+          <canvas id="chartCorr1"></canvas>
+        </div>
+
+        <div class="analysis-note">
+          <strong>Observacao:</strong> As variaveis com maior correlacao com o valor sao <strong>dist_metro (-0.644)</strong>, <strong>area_quintal (+0.614)</strong> e <strong>area_primeiro_andar (+0.606)</strong>. A dist_parque tem correlacao insignificante (-0.071) e sera candidata a remocao.
+        </div>
+
+        <!-- ===== AULA 1.4: Regplot ===== -->
+        <h3 class="sub-title">1.2 Regressao Linear Simples - Area 1o Andar vs Valor</h3>
+        <p class="sub-desc">Visualizacao inicial da relacao entre area do primeiro andar e valor do imovel com reta de regressao (sns.regplot).</p>
+        <div class="chart-container">
+          <canvas id="chartRegplot1"></canvas>
+        </div>
+
+        <!-- ===== AULA 2: Analises Graficas ===== -->
+        <h3 class="sub-title">2. Analise Grafica - Distribuicao da Variavel Dependente</h3>
+
+        <h3 class="sub-title" style="margin-top:1.5rem">2.1 Boxplot do Valor dos Imoveis</h3>
+        <p class="sub-desc">Visualizacao da dispersao, quartis e outliers do valor de venda dos imoveis.</p>
+        <div class="boxplot-visual">
+          <div style="text-align:center; font-weight:700; margin-bottom:1rem; color:var(--text)">Valor dos Imoveis (R$)</div>
+          <div class="boxplot-bar" style="margin: 2.5rem 2rem 1.5rem;">
+            <!-- Whiskers: min to Q1 and Q3 to max -->
+            <div class="boxplot-range" style="left: 0%; width: 100%;"></div>
+            <div class="boxplot-whisker" style="left: 0%;"></div>
+            <div class="boxplot-whisker" style="left: 100%;"></div>
+            <!-- Box: Q1 to Q3 (scaled) -->
+            <!-- min=174500, Q1=649875, med=815000, Q3=1070000, max=3775000 -->
+            <!-- scale: 0% = 174500, 100% = 3775000, range = 3600500 -->
+            <div class="boxplot-box" style="left: 13.2%; width: 11.7%;"></div>
+            <div class="boxplot-median" style="left: 17.8%;"></div>
+            <!-- Labels -->
+            <div class="boxplot-stat" style="left: 0%;">Min: R$ 174.500</div>
+            <div class="boxplot-stat" style="left: 13.2%;">Q1: R$ 649.875</div>
+            <div class="boxplot-stat" style="left: 17.8%; top: auto; bottom: -22px;">Mediana: R$ 815.000</div>
+            <div class="boxplot-stat" style="left: 24.9%;">Q3: R$ 1.070.000</div>
+            <div class="boxplot-stat" style="left: 100%;">Max: R$ 3.775.000</div>
+          </div>
+        </div>
+        <div class="analysis-note">
+          <strong>Observacao:</strong> O boxplot mostra concentracao forte a esquerda com cauda longa a direita, indicando <strong>assimetria positiva</strong>. Existem diversos outliers acima de Q3 + 1.5*IIQ, confirmando que uma transformacao sera necessaria.
+        </div>
+
+        <!-- Histogramas -->
+        <h3 class="sub-title">2.2 Distribuicao de Frequencia - Antes e Depois da Transformacao Log</h3>
+        <p class="sub-desc">Comparacao da distribuicao da variavel dependente antes (assimetrica a direita) e depois (aproximadamente normal) da transformacao logaritmica.</p>
+        <div class="chart-row">
+          <div class="chart-container">
+            <canvas id="chartHist1Before"></canvas>
+          </div>
+          <div class="chart-container">
+            <canvas id="chartHist1After"></canvas>
+          </div>
+        </div>
+        <div class="analysis-note">
+          <strong>Observacao:</strong> A distribuicao original e <strong>assimetrica a direita</strong> (media > mediana). Apos aplicar ln(valor), a distribuicao se torna <strong>aproximadamente simetrica</strong>, adequada para o modelo de regressao linear.
+        </div>
+
+        <!-- ===== AULA 2.3: Pairplots ===== -->
+        <h3 class="sub-title">2.3 Dispersao entre Variaveis - Pairplots</h3>
+        <p class="sub-desc">Relacao de cada variavel explicativa com o valor do imovel. Pontos mostram a dispersao e retas vermelhas indicam a tendencia linear.</p>
+        <div class="chart-quad">
+          <div class="chart-container"><canvas id="chartPair1_area"></canvas></div>
+          <div class="chart-container"><canvas id="chartPair1_quintal"></canvas></div>
+          <div class="chart-container"><canvas id="chartPair1_metro"></canvas></div>
+          <div class="chart-container"><canvas id="chartPair1_parque"></canvas></div>
+        </div>
+        <div class="analysis-note">
+          <strong>Observacao:</strong> Area do 1o andar e quintal mostram tendencia positiva clara. Dist. metro tem tendencia negativa forte. Dist. parque nao apresenta padrao visivel - confirmando a baixa correlacao (-0.071).
+        </div>
+
+        <!-- ===== AULA 3: Transformacao ===== -->
+        <h3 class="sub-title">3. Dispersao com Variaveis Transformadas (Log-Log)</h3>
+        <p class="sub-desc">Apos aplicar ln() nas variaveis, as relacoes se tornam mais lineares, melhorando o ajuste do modelo.</p>
+        <div class="chart-quad">
+          <div class="chart-container"><canvas id="chartLogPair1_area"></canvas></div>
+          <div class="chart-container"><canvas id="chartLogPair1_quintal"></canvas></div>
+          <div class="chart-container"><canvas id="chartLogPair1_metro"></canvas></div>
+          <div class="chart-container"><canvas id="chartLogPair1_parque"></canvas></div>
+        </div>
+        <div class="analysis-note">
+          <strong>Observacao:</strong> Apos a transformacao log, os pontos se distribuem de forma <strong>mais linear e homogenea</strong>. A nuvem se torna menos dispersa, especialmente para area_1o_andar e dist_metro.
+        </div>
+
+        <!-- ===== AULA 4: OLS e Modelo ===== -->
+        <h3 class="sub-title">4. Resumo OLS - Statsmodels (Todas as Variaveis)</h3>
+        <p class="sub-desc">Modelo completo estimado com todas as 5 variaveis para avaliar significancia estatistica individual.</p>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th class="left">Variavel</th><th>Coef.</th><th>Erro Pad.</th><th>t</th><th>P>|t|</th><th>IC 2.5%</th><th>IC 97.5%</th><th>Sig.?</th></tr></thead>
+            <tbody>
+              <tr><td class="left">Intercepto</td><td>11.198</td><td>0.127</td><td>88.044</td><td>0.000</td><td>10.949</td><td>11.448</td><td class="sig">Sim</td></tr>
+              <tr><td class="left">log_area_1o_andar</td><td>0.498</td><td>0.026</td><td>18.955</td><td>0.000</td><td>0.447</td><td>0.550</td><td class="sig">Sim</td></tr>
+              <tr><td class="left">existe_2o_andar</td><td>0.187</td><td>0.015</td><td>12.827</td><td>0.000</td><td>0.158</td><td>0.216</td><td class="sig">Sim</td></tr>
+              <tr><td class="left">log_area_quintal</td><td>0.079</td><td>0.011</td><td>7.134</td><td>0.000</td><td>0.057</td><td>0.101</td><td class="sig">Sim</td></tr>
+              <tr><td class="left">log_dist_metro</td><td>-0.261</td><td>0.010</td><td>-26.284</td><td>0.000</td><td>-0.280</td><td>-0.241</td><td class="sig">Sim</td></tr>
+              <tr><td class="left">log_dist_parque</td><td>-0.009</td><td>0.008</td><td>-1.149</td><td>0.251</td><td>-0.025</td><td>0.006</td><td class="not-sig">Nao</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="color:var(--muted);font-size:0.82rem;margin:0.5rem 0 1rem;">R2 = 0.759 | R2 Ajust. = 0.758 | F = 641.1 | AIC = -417.1 | Durbin-Watson = 2.046</p>
+
+        <div class="analysis-note">
+          <strong>Decisao:</strong> A variavel <strong>log_dist_parque</strong> tem p-valor = 0.251 (> 0.05), ou seja, <strong>nao e estatisticamente significante</strong>. Ela sera removida do modelo final. As demais 4 variaveis sao altamente significantes (p < 0.001).
+        </div>
+
+        <!-- Coeff chart -->
+        <h3 class="sub-title">4.1 Coeficientes do Modelo Final</h3>
+        <div class="chart-container">
+          <canvas id="chartCoeff1"></canvas>
+        </div>
+
+        <div class="formula-box">
+          ln(Valor) = 11.198 + 0.498 * ln(Area1oAndar) + 0.187 * Dummy2oAndar + 0.079 * ln(AreaQuintal) - 0.261 * ln(DistMetro)
+        </div>
+
+        <h3 class="sub-title">4.2 Interpretacao dos Coeficientes</h3>
+        <div class="grid-2">
+          <div class="coeff-card"><div class="coeff-icon up">+</div><div><h4>Area do 1o Andar</h4><div class="coeff-value">+0.498%</div><p>+1% na area gera +0.5% no valor. Maior impacto positivo.</p></div></div>
+          <div class="coeff-card"><div class="coeff-icon up">+</div><div><h4>Existe 2o Andar (Dummy)</h4><div class="coeff-value">+20.6%</div><p>100*(exp(0.187)-1). Ter 2o andar agrega ~20.6% ao valor.</p></div></div>
+          <div class="coeff-card"><div class="coeff-icon up">+</div><div><h4>Area do Quintal</h4><div class="coeff-value">+0.079%</div><p>+1% na area do quintal gera +0.079% no valor.</p></div></div>
+          <div class="coeff-card"><div class="coeff-icon down">-</div><div><h4>Distancia ao Metro</h4><div class="coeff-value">-0.261%</div><p>+1% na distancia reduz -0.26% no valor. Maior impacto negativo.</p></div></div>
+        </div>
+
+        <!-- ===== AULA 5: Resultados ===== -->
+        <h3 class="sub-title">5. Analise dos Resultados do Modelo</h3>
+
+        <h3 class="sub-title" style="margin-top:1.5rem">5.1 Previsao vs Valor Real (Dados de Treino)</h3>
+        <p class="sub-desc">Grafico de dispersao entre o log do preco previsto e o log do preco real. Pontos proximos a diagonal indicam bom ajuste.</p>
+        <div class="chart-container tall">
+          <canvas id="chartPredVsReal1"></canvas>
+        </div>
+        <div class="analysis-note">
+          <strong>Observacao:</strong> Os pontos se distribuem ao longo da diagonal (linha vermelha), indicando que o modelo captura bem a tendencia geral. A dispersao em torno da linha e relativamente uniforme.
+        </div>
+
+        <!-- Residuos -->
+        <h3 class="sub-title">5.2 Distribuicao dos Residuos</h3>
+        <p class="sub-desc">Histograma dos residuos (y_real - y_previsto). Um bom modelo apresenta residuos com distribuicao aproximadamente normal centrada em zero.</p>
+        <div class="chart-container">
+          <canvas id="chartResidHist1"></canvas>
+        </div>
+
+        <!-- Homocedasticidade -->
+        <h3 class="sub-title">5.3 Homocedasticidade - Previsao vs Residuos</h3>
+        <p class="sub-desc">Verifica se a variancia dos residuos e constante ao longo das previsoes. Pontos devem estar distribuidos de forma aleatoria e uniforme em torno de zero.</p>
+        <div class="chart-container tall">
+          <canvas id="chartHomosced1"></canvas>
+        </div>
+        <div class="analysis-note">
+          <strong>Observacao:</strong> A dispersao dos residuos e <strong>relativamente uniforme</strong> ao longo do eixo X, sugerindo homocedasticidade razoavel. Ha uma leve concentracao de residuos negativos para valores altos, tipico de modelos com assimetria residual (Skew = -1.668).
+        </div>
+
+        <!-- Prediction -->
+        <h3 class="sub-title">5.4 Precificacao de Exemplo</h3>
+        <div class="prediction-box">
+          <div class="price">R$ 1.243.551,34</div>
+          <div class="subtitle">Valor estimado pelo modelo</div>
+          <div class="prediction-specs">
+            <span class="spec"><strong>150m2</strong> 1o andar</span>
+            <span class="spec"><strong>Sim</strong> 2o andar</span>
+            <span class="spec"><strong>80m2</strong> quintal</span>
+            <span class="spec"><strong>2km</strong> do metro</span>
+          </div>
+        </div>
+
+        <h3 class="sub-title">5.5 Casas Pendentes de Precificacao</h3>
+        <p class="sub-desc">10 imoveis do arquivo casas_a_precificar.csv aguardando previsao pelo modelo treinado.</p>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>#</th><th>Area 1o (m2)</th><th>2o Andar</th><th>Quintal (m2)</th><th>Dist. Metro (km)</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>180</td><td>Sim</td><td>40</td><td>8.0</td></tr>
+              <tr><td>2</td><td>130</td><td>Nao</td><td>80</td><td>1.0</td></tr>
+              <tr><td>3</td><td>170</td><td>Sim</td><td>60</td><td>7.5</td></tr>
+              <tr><td>4</td><td>250</td><td>Sim</td><td>70</td><td>4.0</td></tr>
+              <tr><td>5</td><td>260</td><td>Nao</td><td>70</td><td>8.5</td></tr>
+              <tr><td>6</td><td>200</td><td>Nao</td><td>140</td><td>1.5</td></tr>
+              <tr><td>7</td><td>300</td><td>Nao</td><td>140</td><td>5.0</td></tr>
+              <tr><td>8</td><td>120</td><td>Nao</td><td>60</td><td>10.0</td></tr>
+              <tr><td>9</td><td>120</td><td>Sim</td><td>100</td><td>1.5</td></tr>
+              <tr><td>10</td><td>120</td><td>Sim</td><td>40</td><td>7.5</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ==================== TAB 2: HOSPEDAGENS ==================== -->
+      <div id="estudo2" class="tab-content">
+        <p class="section-desc">
+          Desafio pratico: precificar hospedagens de temporada com base em area,
+          distancia a praia e presenca de piscina. Dataset com 5.000 registros.
+        </p>
+
+        <div class="metrics">
+          <div class="metric"><div class="value">5.000</div><div class="label">Registros</div></div>
+          <div class="metric"><div class="value">5</div><div class="label">Variaveis</div></div>
+          <div class="metric"><div class="value">0.811</div><div class="label">R2 Treino</div></div>
+          <div class="metric"><div class="value">0.808</div><div class="label">R2 Teste</div></div>
+        </div>
+
+        <!-- Descritivas -->
+        <h3 class="sub-title">1. Estatisticas Descritivas</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th class="left">Estatistica</th><th>Valor (R$)</th><th>Area (m2)</th><th>Dist. Praia (km)</th><th>Dist. Mercado (km)</th><th>Piscina</th></tr></thead>
+            <tbody>
+              <tr><td class="left">Contagem</td><td>5.000</td><td>5.000</td><td>5.000</td><td>5.000</td><td>5.000</td></tr>
+              <tr><td class="left">Media</td><td class="highlight">1.402,93</td><td>121,94</td><td>3,02</td><td>0,50</td><td>0,51</td></tr>
+              <tr><td class="left">Desvio Padrao</td><td>1.883,27</td><td>90,54</td><td>3,17</td><td>0,29</td><td>0,50</td></tr>
+              <tr><td class="left">Minimo</td><td>75,00</td><td>16</td><td>0,00</td><td>0,00</td><td>0</td></tr>
+              <tr><td class="left">Q1 (25%)</td><td>460,00</td><td>70</td><td>0,44</td><td>0,24</td><td>0</td></tr>
+              <tr><td class="left">Mediana</td><td>820,00</td><td>93</td><td>1,48</td><td>0,50</td><td>1</td></tr>
+              <tr><td class="left">Q3 (75%)</td><td>1.590,00</td><td>146</td><td>5,61</td><td>0,75</td><td>1</td></tr>
+              <tr><td class="left">Maximo</td><td>25.000,00</td><td>2.000</td><td>17,96</td><td>1,00</td><td>1</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Correlacao -->
+        <h3 class="sub-title">1.1 Matriz de Correlacao Completa</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th></th><th>Valor</th><th>Area</th><th>Dist. Praia</th><th>Dist. Mercado</th><th>Piscina</th></tr></thead>
+            <tbody>
+              <tr><td class="left" style="font-weight:700;color:var(--text)">Valor</td><td class="hm-diag">1.000</td><td class="hm-strong-pos">0.711</td><td class="hm-mod-neg">-0.367</td><td class="hm-neutral">-0.024</td><td class="hm-mod-pos">0.295</td></tr>
+              <tr><td class="left" style="font-weight:700;color:var(--text)">Area</td><td class="hm-strong-pos">0.711</td><td class="hm-diag">1.000</td><td class="hm-mod-neg">-0.283</td><td class="hm-neutral">-0.031</td><td class="hm-mod-pos">0.300</td></tr>
+              <tr><td class="left" style="font-weight:700;color:var(--text)">Dist. Praia</td><td class="hm-mod-neg">-0.367</td><td class="hm-mod-neg">-0.283</td><td class="hm-diag">1.000</td><td class="hm-neutral">0.026</td><td class="hm-mod-neg">-0.323</td></tr>
+              <tr><td class="left" style="font-weight:700;color:var(--text)">Dist. Mercado</td><td class="hm-neutral">-0.024</td><td class="hm-neutral">-0.031</td><td class="hm-neutral">0.026</td><td class="hm-diag">1.000</td><td class="hm-neutral">-0.005</td></tr>
+              <tr><td class="left" style="font-weight:700;color:var(--text)">Piscina</td><td class="hm-mod-pos">0.295</td><td class="hm-mod-pos">0.300</td><td class="hm-mod-neg">-0.323</td><td class="hm-neutral">-0.005</td><td class="hm-diag">1.000</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="chart-container">
+          <canvas id="chartCorr2"></canvas>
+        </div>
+
+        <!-- Regplot -->
+        <h3 class="sub-title">1.2 Regressao Linear Simples - Area vs Valor</h3>
+        <div class="chart-container">
+          <canvas id="chartRegplot2"></canvas>
+        </div>
+
+        <!-- Boxplot -->
+        <h3 class="sub-title">2. Boxplot do Valor das Hospedagens</h3>
+        <div class="boxplot-visual">
+          <div style="text-align:center; font-weight:700; margin-bottom:1rem; color:var(--text)">Valor das Hospedagens (R$)</div>
+          <div class="boxplot-bar" style="margin: 2.5rem 2rem 1.5rem;">
+            <!-- min=75, Q1=460, med=820, Q3=1590, max=25000 -->
+            <div class="boxplot-range" style="left: 0%; width: 100%;"></div>
+            <div class="boxplot-whisker" style="left: 0%;"></div>
+            <div class="boxplot-whisker" style="left: 100%;"></div>
+            <div class="boxplot-box" style="left: 1.5%; width: 4.5%;"></div>
+            <div class="boxplot-median" style="left: 3.0%;"></div>
+            <div class="boxplot-stat" style="left: 0%;">Min: R$ 75</div>
+            <div class="boxplot-stat" style="left: 1.5%;">Q1: R$ 460</div>
+            <div class="boxplot-stat" style="left: 3.0%; top: auto; bottom: -22px;">Med: R$ 820</div>
+            <div class="boxplot-stat" style="left: 6.0%;">Q3: R$ 1.590</div>
+            <div class="boxplot-stat" style="left: 100%;">Max: R$ 25.000</div>
+          </div>
+        </div>
+        <div class="analysis-note">
+          <strong>Observacao:</strong> Distribuicao fortemente <strong>assimetrica a direita</strong> com a caixa comprimida no canto esquerdo. A distancia entre Q3 e o maximo e enorme (R$ 1.590 a R$ 25.000), confirmando necessidade de transformacao log.
+        </div>
+
+        <!-- Histogramas -->
+        <h3 class="sub-title">2.1 Distribuicao - Antes e Depois da Transformacao Log</h3>
+        <div class="chart-row">
+          <div class="chart-container"><canvas id="chartHist2Before"></canvas></div>
+          <div class="chart-container"><canvas id="chartHist2After"></canvas></div>
+        </div>
+
+        <!-- Pairplots -->
+        <h3 class="sub-title">2.2 Dispersao entre Variaveis</h3>
+        <div class="chart-quad">
+          <div class="chart-container"><canvas id="chartPair2_area"></canvas></div>
+          <div class="chart-container"><canvas id="chartPair2_praia"></canvas></div>
+          <div class="chart-container"><canvas id="chartPair2_mercado"></canvas></div>
+          <div class="chart-container"><canvas id="chartPair2_piscina"></canvas></div>
+        </div>
+
+        <!-- Log pairplots -->
+        <h3 class="sub-title">3. Dispersao com Variaveis Transformadas (Log)</h3>
+        <div class="chart-quad">
+          <div class="chart-container"><canvas id="chartLogPair2_area"></canvas></div>
+          <div class="chart-container"><canvas id="chartLogPair2_praia"></canvas></div>
+          <div class="chart-container"><canvas id="chartLogPair2_mercado"></canvas></div>
+        </div>
+
+        <!-- OLS -->
+        <h3 class="sub-title">4. Resumo OLS - Statsmodels</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th class="left">Variavel</th><th>Coef.</th><th>Erro Pad.</th><th>t</th><th>P>|t|</th><th>IC 2.5%</th><th>IC 97.5%</th><th>Sig.?</th></tr></thead>
+            <tbody>
+              <tr><td class="left">Intercepto</td><td>2.569</td><td>0.064</td><td>40.168</td><td>0.000</td><td>2.443</td><td>2.694</td><td class="sig">Sim</td></tr>
+              <tr><td class="left">log_area</td><td>1.003</td><td>0.013</td><td>77.107</td><td>0.000</td><td>0.978</td><td>1.029</td><td class="sig">Sim</td></tr>
+              <tr><td class="left">log_dist_praia</td><td>-0.465</td><td>0.009</td><td>-49.529</td><td>0.000</td><td>-0.483</td><td>-0.446</td><td class="sig">Sim</td></tr>
+              <tr><td class="left">log_dist_mercado</td><td>0.012</td><td>0.033</td><td>0.352</td><td>0.725</td><td>-0.053</td><td>0.077</td><td class="not-sig">Nao</td></tr>
+              <tr><td class="left">piscina</td><td>0.163</td><td>0.015</td><td>10.969</td><td>0.000</td><td>0.134</td><td>0.192</td><td class="sig">Sim</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="color:var(--muted);font-size:0.82rem;margin:0.5rem 0 1rem;">R2 = 0.811 | R2 Ajust. = 0.810 | F = 3741 | AIC = 3401 | Durbin-Watson = 2.017</p>
+
+        <div class="analysis-note">
+          <strong>Decisao:</strong> <strong>log_dist_mercado</strong> tem p-valor = 0.725 - removida do modelo final. As demais 3 variaveis sao altamente significantes.
+        </div>
+
+        <h3 class="sub-title">4.1 Coeficientes do Modelo Final</h3>
+        <div class="chart-container"><canvas id="chartCoeff2"></canvas></div>
+
+        <div class="formula-box">
+          ln(Valor) = 2.574 + 1.003 * ln(Area) - 0.465 * ln(1+DistPraia) + 0.163 * Piscina
+        </div>
+
+        <h3 class="sub-title">4.2 Interpretacao dos Coeficientes</h3>
+        <div class="grid-2">
+          <div class="coeff-card"><div class="coeff-icon up">+</div><div><h4>Area da Hospedagem</h4><div class="coeff-value">+1.003%</div><p>Elasticidade ~unitaria: +1% na area gera +1% no valor.</p></div></div>
+          <div class="coeff-card"><div class="coeff-icon down">-</div><div><h4>Distancia a Praia</h4><div class="coeff-value">-0.465%</div><p>+1% na distancia reduz -0.465% no valor.</p></div></div>
+          <div class="coeff-card"><div class="coeff-icon up">+</div><div><h4>Piscina (Dummy)</h4><div class="coeff-value">+17.74%</div><p>100*(exp(0.163)-1). Ter piscina agrega ~17.74%.</p></div></div>
+        </div>
+
+        <!-- ===== Results ===== -->
+        <h3 class="sub-title">5. Analise dos Resultados</h3>
+
+        <h3 class="sub-title" style="margin-top:1.5rem">5.1 Previsao vs Real (Treino)</h3>
+        <div class="chart-container tall"><canvas id="chartPredVsReal2"></canvas></div>
+
+        <h3 class="sub-title">5.2 Distribuicao dos Residuos</h3>
+        <div class="chart-container"><canvas id="chartResidHist2"></canvas></div>
+
+        <h3 class="sub-title">5.3 Homocedasticidade - Previsao vs Residuos</h3>
+        <div class="chart-container tall"><canvas id="chartHomosced2"></canvas></div>
+        <div class="analysis-note">
+          <strong>Observacao:</strong> Os residuos se distribuem de forma <strong>mais uniforme</strong> do que no modelo de imoveis (Skew = 0.141, Kurtosis = 3.589), indicando melhor aderencia as premissas da regressao linear. O Durbin-Watson = 2.017 confirma ausencia de autocorrelacao.
+        </div>
+
+        <!-- Prediction -->
+        <h3 class="sub-title">5.4 Precificacao de Exemplo</h3>
+        <div class="prediction-box">
+          <div class="price">R$ 1.564,97</div>
+          <div class="subtitle">Valor estimado para 2 diarias (ate 4 pessoas)</div>
+          <div class="prediction-specs">
+            <span class="spec"><strong>100m2</strong> area</span>
+            <span class="spec"><strong>0km</strong> da praia</span>
+            <span class="spec"><strong>Sim</strong> piscina</span>
+          </div>
+        </div>
+
+        <h3 class="sub-title">5.5 Precificacao em Lote</h3>
+        <div class="chart-container"><canvas id="chartPredictions2"></canvas></div>
+        <div class="table-wrapper" style="margin-top:1.5rem;">
+          <table>
+            <thead><tr><th>#</th><th>Area (m2)</th><th>Dist. Praia</th><th>Piscina</th><th>Valor Estimado</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>460</td><td>5.5 km</td><td>Sim</td><td class="highlight">R$ 3.029,39</td></tr>
+              <tr><td>2</td><td>360</td><td>2.0 km</td><td>Nao</td><td class="highlight">R$ 2.882,21</td></tr>
+              <tr><td>3</td><td>220</td><td>4.0 km</td><td>Nao</td><td class="highlight">R$ 1.387,14</td></tr>
+              <tr><td>4</td><td>500</td><td>1.5 km</td><td>Sim</td><td class="highlight">R$ 5.134,99</td></tr>
+              <tr><td>5</td><td>150</td><td>1.0 km</td><td>Nao</td><td class="highlight">R$ 1.446,31</td></tr>
+              <tr><td>6</td><td>280</td><td>6.0 km</td><td>Nao</td><td class="highlight">R$ 1.510,92</td></tr>
+              <tr><td>7</td><td>460</td><td>3.0 km</td><td>Sim</td><td class="highlight">R$ 3.796,24</td></tr>
+              <tr><td>8</td><td>260</td><td>1.0 km</td><td>Nao</td><td class="highlight">R$ 2.510,91</td></tr>
+              <tr><td>9</td><td>300</td><td>0.5 km</td><td>Nao</td><td class="highlight">R$ 3.313,04</td></tr>
+              <tr><td>10</td><td>180</td><td>6.0 km</td><td>Sim</td><td class="highlight">R$ 1.142,18</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Insights -->
+  <section>
+    <div class="container">
+      <span class="section-label">Insights</span>
+      <h2 class="section-title">Principais Aprendizados</h2>
+      <div class="grid-2">
+        <div class="card"><h3>Transformacao Log Normaliza Dados</h3><p>Distribuicoes assimetricas a direita foram transformadas em distribuicoes aproximadamente normais, melhorando linearidade e qualidade do ajuste.</p></div>
+        <div class="card"><h3>Variaveis Insignificantes Devem Sair</h3><p>Variaveis com p-valor alto (dist_parque p=0.251, dist_mercado p=0.725) foram removidas sem perda de performance.</p></div>
+        <div class="card"><h3>Coeficientes como Elasticidades</h3><p>No modelo log-log, coeficientes = elasticidades: +1% em X gera beta% em Y. Facilita interpretacao de negocio.</p></div>
+        <div class="card"><h3>Variaveis Dummy Tem Tratamento Proprio</h3><p>Impacto via 100*(exp(beta)-1): 2o andar = +20.6%, piscina = +17.74%. Nao podem ser interpretadas como elasticidade.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Estudo realizado no curso <strong>Data Science: Regressao Linear</strong> da Alura</p>
+    <p style="margin-top:0.5rem;"><a href="https://guicorrea93.github.io/">Voltar ao Portfolio</a></p>
+  </footer>
+
+  <script>
+    /* ===== UTILITIES ===== */
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    // Seeded PRNG (mulberry32)
+    function mulberry32(a) { return function() { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; } }
+    const rng = mulberry32(42);
+
+    // Box-Muller for normal distribution
+    function randn() { let u = 0, v = 0; while(u === 0) u = rng(); while(v === 0) v = rng(); return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v); }
+
+    // Generate correlated data
+    function genCorrelated(n, mx, sx, my, sy, r, clipX, clipY) {
+      const pts = [];
+      for (let i = 0; i < n; i++) {
+        let z1 = randn(), z2 = randn();
+        let x = mx + sx * z1;
+        let y = my + sy * (r * z1 + Math.sqrt(1 - r * r) * z2);
+        if (clipX) { x = Math.max(clipX[0], Math.min(clipX[1], x)); }
+        if (clipY) { y = Math.max(clipY[0], Math.min(clipY[1], y)); }
+        pts.push({ x: +x.toFixed(3), y: +y.toFixed(3) });
+      }
+      return pts;
+    }
+
+    // Generate log-correlated data (generate in log space, return both)
+    function genLogCorrelated(n, logMx, logSx, logMy, logSy, r) {
+      const pts = [], logPts = [];
+      for (let i = 0; i < n; i++) {
+        let z1 = randn(), z2 = randn();
+        let lx = logMx + logSx * z1;
+        let ly = logMy + logSy * (r * z1 + Math.sqrt(1 - r * r) * z2);
+        logPts.push({ x: +lx.toFixed(3), y: +ly.toFixed(3) });
+        pts.push({ x: +Math.exp(lx).toFixed(1), y: +Math.exp(ly).toFixed(0) });
+      }
+      return { raw: pts, log: logPts };
+    }
+
+    // Histogram bins from data
+    function histogram(data, nBins, min, max) {
+      const binW = (max - min) / nBins;
+      const bins = Array(nBins).fill(0);
+      const labels = [];
+      for (let i = 0; i < nBins; i++) labels.push(+(min + binW * (i + 0.5)).toFixed(2));
+      data.forEach(v => { const idx = Math.min(Math.floor((v - min) / binW), nBins - 1); if (idx >= 0) bins[idx]++; });
+      return { labels, counts: bins };
+    }
+
+    // Linear regression
+    function linReg(pts) {
+      const n = pts.length;
+      let sx = 0, sy = 0, sxx = 0, sxy = 0;
+      pts.forEach(p => { sx += p.x; sy += p.y; sxx += p.x * p.x; sxy += p.x * p.y; });
+      const b = (n * sxy - sx * sy) / (n * sxx - sx * sx);
+      const a = (sy - b * sx) / n;
+      return { a, b };
+    }
+
+    // Regression line dataset
+    function regLine(pts, color) {
+      const { a, b } = linReg(pts);
+      const xs = pts.map(p => p.x).sort((a, b) => a - b);
+      const xMin = xs[0], xMax = xs[xs.length - 1];
+      return {
+        type: 'line', data: [{ x: xMin, y: a + b * xMin }, { x: xMax, y: a + b * xMax }],
+        borderColor: color || '#EF4444', borderWidth: 3, pointRadius: 0, order: 0,
+        borderDash: [], tension: 0
+      };
+    }
+
+    /* ===== Chart.js Global Config ===== */
+    Chart.defaults.color = '#94A3B8';
+    Chart.defaults.borderColor = 'rgba(148,163,184,0.15)';
+    Chart.defaults.font.family = "ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif";
+    const O = '#F28C28', Os = '#F7BA7E', G = '#1B7F5C', Gs = '#8DBFAE', R = '#EF4444', P = '#8B5CF6';
+
+    /* ======================================================
+       GENERATE DATA - STUDY 1 (IMOVEIS)
+       ====================================================== */
+    // Stats: valor mean=904605 std=397212, area1 mean=108 std=35.9 corr=0.606, quintal mean=29.5 std=12.2 corr=0.614, metro mean=2.77 std=1.91 corr=-0.644, parque mean=8.15 std=4.2 corr=-0.071
+    const N1 = 300;
+    const d1_area = genLogCorrelated(N1, Math.log(108), 0.35, Math.log(904605), 0.42, 0.606);
+    const d1_quintal = genLogCorrelated(N1, Math.log(29.5), 0.4, Math.log(904605), 0.42, 0.614);
+    const d1_metro = genLogCorrelated(N1, Math.log(2.77), 0.65, Math.log(904605), 0.42, -0.644);
+    const d1_parque = genLogCorrelated(N1, Math.log(8.15), 0.5, Math.log(904605), 0.42, -0.071);
+
+    // Histogram data for valor
+    const valorData1 = d1_area.raw.map(p => p.y);
+    const logValorData1 = d1_area.log.map(p => p.y);
+    const hist1Before = histogram(valorData1, 25, 100000, 3800000);
+    const hist1After = histogram(logValorData1, 25, 11.5, 15.5);
+
+    // Prediction vs Real (train) - simulate around the model
+    const predVsReal1 = [];
+    for (let i = 0; i < 250; i++) {
+      const real = 12 + randn() * 1.2;
+      const pred = real + randn() * 0.35;
+      predVsReal1.push({ x: +pred.toFixed(3), y: +real.toFixed(3) });
+    }
+
+    // Residuals
+    const residuals1 = predVsReal1.map(p => ({ x: p.x, y: +(p.y - p.x).toFixed(4) }));
+    const residVals1 = residuals1.map(p => p.y);
+    const residHist1 = histogram(residVals1, 30, -1.5, 1.5);
+
+    /* ======================================================
+       GENERATE DATA - STUDY 2 (HOSPEDAGENS)
+       ====================================================== */
+    const N2 = 400;
+    const d2_area = genLogCorrelated(N2, Math.log(122), 0.65, Math.log(1400), 0.75, 0.711);
+    const d2_praia = genLogCorrelated(N2, Math.log(3), 0.9, Math.log(1400), 0.75, -0.367);
+    const d2_mercado = genLogCorrelated(N2, Math.log(0.5), 0.55, Math.log(1400), 0.75, -0.024);
+
+    // Piscina scatter (binary)
+    const d2_piscina = [];
+    for (let i = 0; i < N2; i++) {
+      const piscina = rng() > 0.49 ? 1 : 0;
+      const val = Math.exp(Math.log(1400) + 0.75 * randn() + (piscina ? 0.163 : 0));
+      d2_piscina.push({ x: piscina, y: +val.toFixed(0) });
+    }
+
+    const valorData2 = d2_area.raw.map(p => p.y);
+    const logValorData2 = d2_area.log.map(p => p.y);
+    const hist2Before = histogram(valorData2, 25, 0, 15000);
+    const hist2After = histogram(logValorData2, 25, 4, 10);
+
+    // Pred vs Real 2
+    const predVsReal2 = [];
+    for (let i = 0; i < 350; i++) {
+      const real = 7 + randn() * 0.9;
+      const pred = real + randn() * 0.25;
+      predVsReal2.push({ x: +pred.toFixed(3), y: +real.toFixed(3) });
+    }
+    const residuals2 = predVsReal2.map(p => ({ x: p.x, y: +(p.y - p.x).toFixed(4) }));
+    const residVals2 = residuals2.map(p => p.y);
+    const residHist2 = histogram(residVals2, 30, -1, 1);
+
+    /* ======================================================
+       CHART BUILDER HELPERS
+       ====================================================== */
+    function scatterChart(id, pts, xlabel, ylabel, title, showReg) {
+      const datasets = [{
+        data: pts, backgroundColor: 'rgba(242,140,40,0.35)', borderColor: 'rgba(242,140,40,0.6)',
+        pointRadius: 2.5, pointHoverRadius: 5, order: 1
+      }];
+      if (showReg) datasets.push(regLine(pts, '#EF4444'));
+      new Chart(document.getElementById(id), {
+        type: 'scatter', data: { datasets },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false }, title: { display: true, text: title, color: '#E5E7EB', font: { size: 13, weight: 700 } } },
+          scales: {
+            x: { title: { display: true, text: xlabel, color: '#94A3B8' }, grid: { color: 'rgba(148,163,184,0.08)' } },
+            y: { title: { display: true, text: ylabel, color: '#94A3B8' }, grid: { color: 'rgba(148,163,184,0.08)' } }
+          }
+        }
+      });
+    }
+
+    function histChart(id, histData, title, xlabel, color) {
+      new Chart(document.getElementById(id), {
+        type: 'bar',
+        data: {
+          labels: histData.labels.map(l => typeof l === 'number' && l > 10000 ? (l/1e6).toFixed(2)+'M' : l.toFixed ? l.toFixed(2) : l),
+          datasets: [{ data: histData.counts, backgroundColor: color || 'rgba(242,140,40,0.5)', borderColor: color ? color.replace('0.5','0.8') : 'rgba(242,140,40,0.8)', borderWidth: 1, barPercentage: 1, categoryPercentage: 1 }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false }, title: { display: true, text: title, color: '#E5E7EB', font: { size: 13, weight: 700 } } },
+          scales: { x: { title: { display: true, text: xlabel, color: '#94A3B8' }, grid: { display: false }, ticks: { maxTicksLimit: 8, maxRotation: 0, font: { size: 10 } } }, y: { title: { display: true, text: 'Frequencia', color: '#94A3B8' }, grid: { color: 'rgba(148,163,184,0.08)' } } }
+        }
+      });
+    }
+
+    /* ======================================================
+       CREATE ALL CHARTS
+       ====================================================== */
+
+    // R2 Comparison
+    new Chart(document.getElementById('chartR2Compare'), {
+      type: 'bar',
+      data: { labels: ['Imoveis\nTreino', 'Imoveis\nTeste', 'Hospedagens\nTreino', 'Hospedagens\nTeste'],
+        datasets: [{ data: [0.759, 0.738, 0.811, 0.808], backgroundColor: [O, Os, G, Gs], borderColor: [O, Os, G, Gs], borderWidth: 2, borderRadius: 8, barPercentage: 0.6 }]
+      },
+      options: { responsive: true, plugins: { legend: { display: false }, title: { display: true, text: 'Coeficiente de Determinacao (R2) - Treino vs Teste', color: '#E5E7EB', font: { size: 16, weight: 700 } },
+        tooltip: { callbacks: { label: ctx => `R2 = ${ctx.parsed.y.toFixed(3)} (${(ctx.parsed.y*100).toFixed(1)}% explicado)` } } },
+        scales: { y: { min: 0, max: 1, ticks: { callback: v => (v*100)+'%' }, grid: { color: 'rgba(148,163,184,0.1)' } }, x: { grid: { display: false } } }
+      }
+    });
+
+    // === STUDY 1 CHARTS ===
+
+    // Correlation bars
+    new Chart(document.getElementById('chartCorr1'), {
+      type: 'bar', data: { labels: ['Area Quintal', 'Area 1o Andar', 'Existe 2o Andar', 'Dist. Parque', 'Dist. Metro'],
+        datasets: [{ data: [0.614, 0.606, 0.138, -0.071, -0.644],
+          backgroundColor: [0.614,0.606,0.138,-0.071,-0.644].map(v => v >= 0 ? 'rgba(27,127,92,0.7)' : 'rgba(239,68,68,0.7)'),
+          borderColor: [0.614,0.606,0.138,-0.071,-0.644].map(v => v >= 0 ? G : R), borderWidth: 2, borderRadius: 6, barPercentage: 0.65 }] },
+      options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false }, title: { display: true, text: 'Correlacao de Pearson com Valor do Imovel', color: '#E5E7EB', font: { size: 14, weight: 700 } } },
+        scales: { x: { min: -1, max: 1, grid: { color: 'rgba(148,163,184,0.1)' } }, y: { grid: { display: false } } } }
+    });
+
+    // Regplot: area vs valor
+    scatterChart('chartRegplot1', d1_area.raw, 'Area 1o Andar (m2)', 'Valor (R$)', 'Regplot: Area 1o Andar vs Valor', true);
+
+    // Histograms
+    histChart('chartHist1Before', hist1Before, 'Distribuicao de Frequencia - Valor Original', 'Valor dos Imoveis (R$)', 'rgba(242,140,40,0.5)');
+    histChart('chartHist1After', hist1After, 'Distribuicao de Frequencia - Log(Valor)', 'Log do Valor dos Imoveis', 'rgba(27,127,92,0.5)');
+
+    // Pairplots (raw)
+    scatterChart('chartPair1_area', d1_area.raw, 'Area 1o Andar (m2)', 'Valor (R$)', 'Area 1o Andar vs Valor (r=0.606)', true);
+    scatterChart('chartPair1_quintal', d1_quintal.raw, 'Area Quintal (m2)', 'Valor (R$)', 'Area Quintal vs Valor (r=0.614)', true);
+    scatterChart('chartPair1_metro', d1_metro.raw, 'Dist. Metro (km)', 'Valor (R$)', 'Dist. Metro vs Valor (r=-0.644)', true);
+    scatterChart('chartPair1_parque', d1_parque.raw, 'Dist. Parque (km)', 'Valor (R$)', 'Dist. Parque vs Valor (r=-0.071)', true);
+
+    // Log pairplots
+    scatterChart('chartLogPair1_area', d1_area.log, 'log(Area 1o Andar)', 'log(Valor)', 'log(Area 1o) vs log(Valor)', true);
+    scatterChart('chartLogPair1_quintal', d1_quintal.log, 'log(Area Quintal)', 'log(Valor)', 'log(Quintal) vs log(Valor)', true);
+    scatterChart('chartLogPair1_metro', d1_metro.log, 'log(Dist. Metro)', 'log(Valor)', 'log(Dist. Metro) vs log(Valor)', true);
+    scatterChart('chartLogPair1_parque', d1_parque.log, 'log(Dist. Parque)', 'log(Valor)', 'log(Dist. Parque) vs log(Valor)', true);
+
+    // Coefficients
+    new Chart(document.getElementById('chartCoeff1'), {
+      type: 'bar', data: { labels: ['log_area_1o_andar', 'existe_2o_andar', 'log_area_quintal', 'log_dist_metro'],
+        datasets: [{ data: [0.498, 0.187, 0.079, -0.261], backgroundColor: ['rgba(242,140,40,0.75)', 'rgba(139,92,246,0.65)', 'rgba(27,127,92,0.65)', 'rgba(239,68,68,0.65)'], borderColor: [O, P, G, R], borderWidth: 2, borderRadius: 6, barPercentage: 0.6 }] },
+      options: { responsive: true, plugins: { legend: { display: false }, title: { display: true, text: 'Coeficientes de Regressao - Modelo Imoveis', color: '#E5E7EB', font: { size: 14, weight: 700 } } },
+        scales: { y: { grid: { color: 'rgba(148,163,184,0.1)' } }, x: { grid: { display: false } } } }
+    });
+
+    // Pred vs Real 1
+    (function(){
+      const minV = Math.min(...predVsReal1.map(p=>p.x), ...predVsReal1.map(p=>p.y));
+      const maxV = Math.max(...predVsReal1.map(p=>p.x), ...predVsReal1.map(p=>p.y));
+      new Chart(document.getElementById('chartPredVsReal1'), {
+        type: 'scatter',
+        data: { datasets: [
+          { data: predVsReal1, backgroundColor: 'rgba(242,140,40,0.35)', pointRadius: 3, order: 1 },
+          { type: 'line', data: [{x:minV,y:minV},{x:maxV,y:maxV}], borderColor: '#EF4444', borderWidth: 2, pointRadius: 0, borderDash: [6,4], order: 0, label: 'Ideal (y=x)' }
+        ] },
+        options: { responsive: true, plugins: { legend: { display: true, labels: { filter: i => i.text === 'Ideal (y=x)' } }, title: { display: true, text: 'Previsao vs Real (Dados de Treino)', color: '#E5E7EB', font: { size: 14, weight: 700 } } },
+          scales: { x: { title: { display: true, text: 'log(Preco) - Previsao', color: '#94A3B8' }, grid: { color: 'rgba(148,163,184,0.08)' } },
+                    y: { title: { display: true, text: 'log(Preco) - Real', color: '#94A3B8' }, grid: { color: 'rgba(148,163,184,0.08)' } } }
+        }
+      });
+    })();
+
+    // Residuals histogram 1
+    histChart('chartResidHist1', residHist1, 'Distribuicao de Frequencia dos Residuos', 'Residuos (log do Preco)', 'rgba(139,92,246,0.5)');
+
+    // Homoscedasticity 1
+    (function(){
+      new Chart(document.getElementById('chartHomosced1'), {
+        type: 'scatter',
+        data: { datasets: [
+          { data: residuals1, backgroundColor: 'rgba(242,140,40,0.35)', pointRadius: 3, order: 1 },
+          { type: 'line', data: [{x:Math.min(...residuals1.map(p=>p.x)),y:0},{x:Math.max(...residuals1.map(p=>p.x)),y:0}], borderColor: '#EF4444', borderWidth: 2, pointRadius: 0, borderDash: [6,4], order: 0 }
+        ] },
+        options: { responsive: true, plugins: { legend: { display: false }, title: { display: true, text: 'Previsao vs Residuos (Homocedasticidade)', color: '#E5E7EB', font: { size: 14, weight: 700 } } },
+          scales: { x: { title: { display: true, text: 'log(Preco) - Previsao', color: '#94A3B8' }, grid: { color: 'rgba(148,163,184,0.08)' } },
+                    y: { title: { display: true, text: 'Residuos', color: '#94A3B8' }, grid: { color: 'rgba(148,163,184,0.08)' } } }
+        }
+      });
+    })();
+
+    // === STUDY 2 CHARTS ===
+
+    // Correlation bars
+    new Chart(document.getElementById('chartCorr2'), {
+      type: 'bar', data: { labels: ['Area', 'Piscina', 'Dist. Mercado', 'Dist. Praia'],
+        datasets: [{ data: [0.711, 0.295, -0.024, -0.367],
+          backgroundColor: [0.711,0.295,-0.024,-0.367].map(v => v >= 0 ? 'rgba(27,127,92,0.7)' : 'rgba(239,68,68,0.7)'),
+          borderColor: [0.711,0.295,-0.024,-0.367].map(v => v >= 0 ? G : R), borderWidth: 2, borderRadius: 6, barPercentage: 0.65 }] },
+      options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false }, title: { display: true, text: 'Correlacao de Pearson com Valor da Hospedagem', color: '#E5E7EB', font: { size: 14, weight: 700 } } },
+        scales: { x: { min: -1, max: 1, grid: { color: 'rgba(148,163,184,0.1)' } }, y: { grid: { display: false } } } }
+    });
+
+    // Regplot 2
+    scatterChart('chartRegplot2', d2_area.raw, 'Area (m2)', 'Valor (R$)', 'Regplot: Area vs Valor da Hospedagem', true);
+
+    // Histograms 2
+    histChart('chartHist2Before', hist2Before, 'Distribuicao de Frequencia - Valor Original', 'Valor das Hospedagens (R$)', 'rgba(242,140,40,0.5)');
+    histChart('chartHist2After', hist2After, 'Distribuicao de Frequencia - Log(Valor)', 'Log do Valor das Hospedagens', 'rgba(27,127,92,0.5)');
+
+    // Pairplots 2
+    scatterChart('chartPair2_area', d2_area.raw, 'Area (m2)', 'Valor (R$)', 'Area vs Valor (r=0.711)', true);
+    scatterChart('chartPair2_praia', d2_praia.raw, 'Dist. Praia (km)', 'Valor (R$)', 'Dist. Praia vs Valor (r=-0.367)', true);
+    scatterChart('chartPair2_mercado', d2_mercado.raw, 'Dist. Mercado (km)', 'Valor (R$)', 'Dist. Mercado vs Valor (r=-0.024)', true);
+
+    // Piscina scatter (custom)
+    new Chart(document.getElementById('chartPair2_piscina'), {
+      type: 'scatter',
+      data: { datasets: [{ data: d2_piscina, backgroundColor: 'rgba(242,140,40,0.35)', borderColor: 'rgba(242,140,40,0.6)', pointRadius: 2.5 }] },
+      options: { responsive: true, plugins: { legend: { display: false }, title: { display: true, text: 'Piscina vs Valor (r=0.295)', color: '#E5E7EB', font: { size: 13, weight: 700 } } },
+        scales: { x: { title: { display: true, text: 'Piscina (0=Nao, 1=Sim)', color: '#94A3B8' }, min: -0.5, max: 1.5, ticks: { stepSize: 1 }, grid: { color: 'rgba(148,163,184,0.08)' } },
+                  y: { title: { display: true, text: 'Valor (R$)', color: '#94A3B8' }, grid: { color: 'rgba(148,163,184,0.08)' } } }
+      }
+    });
+
+    // Log pairplots 2
+    scatterChart('chartLogPair2_area', d2_area.log, 'log(Area)', 'log(Valor)', 'log(Area) vs log(Valor)', true);
+    scatterChart('chartLogPair2_praia', d2_praia.log, 'log(1+Dist. Praia)', 'log(Valor)', 'log(1+Dist.Praia) vs log(Valor)', true);
+    scatterChart('chartLogPair2_mercado', d2_mercado.log, 'log(1+Dist. Mercado)', 'log(Valor)', 'log(1+Dist.Mercado) vs log(Valor)', true);
+
+    // Coefficients 2
+    new Chart(document.getElementById('chartCoeff2'), {
+      type: 'bar', data: { labels: ['log_area', 'log_dist_praia', 'piscina'],
+        datasets: [{ data: [1.003, -0.465, 0.163], backgroundColor: ['rgba(242,140,40,0.75)', 'rgba(239,68,68,0.65)', 'rgba(139,92,246,0.65)'], borderColor: [O, R, P], borderWidth: 2, borderRadius: 6, barPercentage: 0.5 }] },
+      options: { responsive: true, plugins: { legend: { display: false }, title: { display: true, text: 'Coeficientes de Regressao - Modelo Hospedagens', color: '#E5E7EB', font: { size: 14, weight: 700 } } },
+        scales: { y: { grid: { color: 'rgba(148,163,184,0.1)' } }, x: { grid: { display: false } } } }
+    });
+
+    // Pred vs Real 2
+    (function(){
+      const minV = Math.min(...predVsReal2.map(p=>p.x), ...predVsReal2.map(p=>p.y));
+      const maxV = Math.max(...predVsReal2.map(p=>p.x), ...predVsReal2.map(p=>p.y));
+      new Chart(document.getElementById('chartPredVsReal2'), {
+        type: 'scatter',
+        data: { datasets: [
+          { data: predVsReal2, backgroundColor: 'rgba(27,127,92,0.35)', pointRadius: 3, order: 1 },
+          { type: 'line', data: [{x:minV,y:minV},{x:maxV,y:maxV}], borderColor: '#EF4444', borderWidth: 2, pointRadius: 0, borderDash: [6,4], order: 0, label: 'Ideal (y=x)' }
+        ] },
+        options: { responsive: true, plugins: { legend: { display: true, labels: { filter: i => i.text === 'Ideal (y=x)' } }, title: { display: true, text: 'Previsao vs Real (Dados de Treino)', color: '#E5E7EB', font: { size: 14, weight: 700 } } },
+          scales: { x: { title: { display: true, text: 'log(Preco) - Previsao', color: '#94A3B8' }, grid: { color: 'rgba(148,163,184,0.08)' } },
+                    y: { title: { display: true, text: 'log(Preco) - Real', color: '#94A3B8' }, grid: { color: 'rgba(148,163,184,0.08)' } } }
+        }
+      });
+    })();
+
+    // Residuals histogram 2
+    histChart('chartResidHist2', residHist2, 'Distribuicao de Frequencia dos Residuos', 'Residuos (log do Preco)', 'rgba(139,92,246,0.5)');
+
+    // Homoscedasticity 2
+    (function(){
+      new Chart(document.getElementById('chartHomosced2'), {
+        type: 'scatter',
+        data: { datasets: [
+          { data: residuals2, backgroundColor: 'rgba(27,127,92,0.35)', pointRadius: 3, order: 1 },
+          { type: 'line', data: [{x:Math.min(...residuals2.map(p=>p.x)),y:0},{x:Math.max(...residuals2.map(p=>p.x)),y:0}], borderColor: '#EF4444', borderWidth: 2, pointRadius: 0, borderDash: [6,4], order: 0 }
+        ] },
+        options: { responsive: true, plugins: { legend: { display: false }, title: { display: true, text: 'Previsao vs Residuos (Homocedasticidade)', color: '#E5E7EB', font: { size: 14, weight: 700 } } },
+          scales: { x: { title: { display: true, text: 'log(Preco) - Previsao', color: '#94A3B8' }, grid: { color: 'rgba(148,163,184,0.08)' } },
+                    y: { title: { display: true, text: 'Residuos', color: '#94A3B8' }, grid: { color: 'rgba(148,163,184,0.08)' } } }
+        }
+      });
+    })();
+
+    // Predictions bar chart
+    new Chart(document.getElementById('chartPredictions2'), {
+      type: 'bar',
+      data: { labels: ['#1: 460m2, Piscina', '#2: 360m2', '#3: 220m2', '#4: 500m2, Piscina', '#5: 150m2', '#6: 280m2', '#7: 460m2, Piscina', '#8: 260m2', '#9: 300m2', '#10: 180m2, Piscina'],
+        datasets: [{ data: [3029.39,2882.21,1387.14,5134.99,1446.31,1510.92,3796.24,2510.91,3313.04,1142.18],
+          backgroundColor: [3029.39,2882.21,1387.14,5134.99,1446.31,1510.92,3796.24,2510.91,3313.04,1142.18].map(v => v > 3000 ? 'rgba(242,140,40,0.8)' : v > 2000 ? 'rgba(242,140,40,0.55)' : 'rgba(242,140,40,0.35)'),
+          borderColor: O, borderWidth: 2, borderRadius: 6, barPercentage: 0.7 }] },
+      options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false }, title: { display: true, text: 'Valores Estimados por Hospedagem', color: '#E5E7EB', font: { size: 14, weight: 700 } },
+        tooltip: { callbacks: { label: ctx => `R$ ${ctx.parsed.x.toLocaleString('pt-BR',{minimumFractionDigits:2})}` } } },
+        scales: { x: { ticks: { callback: v => 'R$ '+v.toLocaleString('pt-BR') }, grid: { color: 'rgba(148,163,184,0.1)' } }, y: { grid: { display: false }, ticks: { font: { size: 11 } } } }
+      }
+    });
+  </script>
+</body>
+</html>

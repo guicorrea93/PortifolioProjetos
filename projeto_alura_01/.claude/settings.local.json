@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:guicorrea93.github.io)",
+      "Bash(curl -sL https://guicorrea93.github.io/)",
+      "Bash(curl -sL https://guicorrea93.github.io/assets/css/styles.css)"
+    ]
+  }
+}
