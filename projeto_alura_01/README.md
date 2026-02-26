@@ -1,5 +1,7 @@
 # Data Science: Regressão Linear - Transformação de Variáveis
 
+![Thumbnail do Projeto](thumbnail.png)
+
 Estudo de regressão linear múltipla com transformação logarítmica para precificação de imóveis e hospedagens, desenvolvido no curso da [Alura](https://www.alura.com.br/).
 
 **[Ver página do estudo](https://guicorrea93.github.io/PortifolioProjetos/projeto_alura_01/)**
