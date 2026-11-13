@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>Endereço novo</title>
+<script>
+  // Leva qualquer link antigo /PortifolioProjetos/projeto_N/... para o endereço novo.
+  var mapa = {
+    "projeto_1": "01-dashboard-macroeconomico-bcb",
+    "projeto_2": "02-superstore-eda-interativa",
+    "projeto_3": "03-ecommerce-360",
+    "projeto_4": "04-rossmann-previsao-vendas",
+    "projeto_5": "05-clusterbr-municipios"
+  };
+  var partes = location.pathname.split("/").filter(Boolean); // ["PortifolioProjetos", "projeto_5", ...]
+  var destino = "https://guicorrea93.github.io/projetos.html";
+  if (partes.length > 1 && mapa[partes[1]]) {
+    destino = "https://guicorrea93.github.io/portfolio-projetos/" + mapa[partes[1]] + "/" + partes.slice(2).join("/");
+  }
+  location.replace(destino + location.search + location.hash);
+</script>
+</head>
+<body>
+<p>Este conteúdo mudou de endereço. <a href="https://guicorrea93.github.io/projetos.html">Ver os projetos</a>.</p>
+</body>
+</html>
